@@ -6,7 +6,7 @@
 <MudText Typo="Typo.h3" GutterBottom="true">Pokedex!</MudText>
 
 <div class="d-flex flex-column align-center">
-    <MudPagination @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="4" />
+    <MudPagination @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="16" />
 </div>
 
 @if (pokemonList.Count >= _selectedPage * 12)
@@ -52,7 +52,7 @@ else
 @code {
     //var temp = await pokeClient.GetNamedResourcePageAsync<Pokemon>(12, 0);
     //https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
-    private MudPagination _mudPagination;
+    private MudPagination? _mudPagination;
     private int _selectedPage = 1;
     private int _pokemonListCount = 0;
     private string _pokemonListCountKey = "PokemonListCount";
@@ -82,7 +82,7 @@ else
         if (await localStorage.ContainKeyAsync(_selectedPageKey))
         {
             _selectedPage = int.Parse(await localStorage.GetItemAsStringAsync(_selectedPageKey));
-            _mudPagination.NavigateTo(_selectedPage - 1);
+            _mudPagination?.NavigateTo(_selectedPage - 1);
         }
 
     }

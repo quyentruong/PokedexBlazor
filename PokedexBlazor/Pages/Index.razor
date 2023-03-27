@@ -1,5 +1,4 @@
-﻿@inject LocalStorageAccessor LocalStorageAccessor
-@page "/"
+﻿@page "/"
 @implements IDisposable
 
 <PageTitle>Home</PageTitle>
@@ -56,33 +55,33 @@ else
     private MudPagination _mudPagination;
     private int _selectedPage = 1;
     private int _pokemonListCount = 0;
+    private string _pokemonListCountKey = "PokemonListCount";
+    private string _pokemonListKey = "PokemonList";
+    private string _selectedPageKey = "SelectedPage";
     List<PokemonLite> pokemonList = new List<PokemonLite>();
     PokeApiClient pokeClient = new PokeApiClient();
     private string renderKey = Guid.NewGuid().ToString();
 
     protected override async Task OnInitializedAsync()
     {
-        
-        var __ = await LocalStorageAccessor.GetValueAsync<string>("PokemonListCount");
-        if (__ != null)
+
+        if (await localStorage.ContainKeyAsync(_pokemonListCountKey))
         {
-            _pokemonListCount = int.Parse(__);
+            _pokemonListCount = int.Parse(await localStorage.GetItemAsStringAsync(_pokemonListCountKey));
         }
 
-        var _ = await LocalStorageAccessor.GetValueAsync<string>("PokemonList");
-        if (_ != null)
+        if (await localStorage.ContainKeyAsync(_pokemonListKey))
         {
-            pokemonList = JsonConvert.DeserializeObject<List<PokemonLite>>(_) ?? new List<PokemonLite>();
+            pokemonList = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
         }
         else
         {
             await GetPokemonList(1);
         }
 
-        var ___ = await LocalStorageAccessor.GetValueAsync<string>("SelectedPage");
-        if (___ != null)
+        if (await localStorage.ContainKeyAsync(_selectedPageKey))
         {
-            _selectedPage = int.Parse(___);
+            _selectedPage = int.Parse(await localStorage.GetItemAsStringAsync(_selectedPageKey));
             _mudPagination.NavigateTo(_selectedPage - 1);
         }
 
@@ -143,16 +142,15 @@ else
         if (_pokemonListCount < pokemonList.Count)
         {
             _pokemonListCount = pokemonList.Count(x => x.Id != 0);
-            await LocalStorageAccessor.SetValueAsync("PokemonListCount", _pokemonListCount);
-            await LocalStorageAccessor.SetValueAsync("PokemonList", JsonConvert.SerializeObject(pokemonList));
+            await localStorage.SetItemAsStringAsync(_pokemonListCountKey, _pokemonListCount.ToString());
+            await localStorage.SetItemAsync<List<PokemonLite>>(_pokemonListKey, pokemonList);
             Console.WriteLine(pokemonList.Count);
         }
     }
 
     private async void PageChanged(int i)
     {
-     
-        await LocalStorageAccessor.SetValueAsync("SelectedPage", i.ToString());
+        await localStorage.SetItemAsStringAsync(_selectedPageKey, i.ToString());
         await GetPokemonList(i).ConfigureAwait(false);
     }
 

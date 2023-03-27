@@ -1,4 +1,6 @@
-﻿@page "/counter"
+﻿@inject LocalStorageAccessor LocalStorageAccessor
+@page "/counter"
+
 
 <PageTitle>Counter</PageTitle>
 
@@ -10,8 +12,18 @@
 @code {
     private int currentCount = 0;
 
-    private void IncrementCount()
+    private async void IncrementCount()
     {
         currentCount++;
+        await LocalStorageAccessor.SetValueAsync("Count", currentCount);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var temp = await LocalStorageAccessor.GetValueAsync<string>("Count");
+        if (temp != null)
+        {
+            currentCount = int.Parse(temp);
+        }
     }
 }

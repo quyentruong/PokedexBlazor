@@ -4,6 +4,11 @@ namespace PokedexBlazor.Utils;
 
 public class BasicUtility
 {
+    public static string PokemonImage(int id)
+    {
+        return $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{id}.png";
+    }
+
     public static string ConvertToHashCode(int number)
     {
         return "#" + number.ToString().Trim().PadLeft(4, '0');

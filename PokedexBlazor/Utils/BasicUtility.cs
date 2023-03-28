@@ -22,7 +22,8 @@ public class BasicUtility
 
     public static int GetNumStars(int value, int maxValue = 200, int maxStars = 10)
     {
-        return (int)Math.Round((double)value * maxStars / maxValue);
+        var temp = (int)Math.Round((double)value * maxStars / maxValue);
+        return temp > maxStars ? maxStars : temp;
     }
 
     public static string Capitalize(string str)

@@ -1,30 +1,35 @@
 ﻿@page "/pokemon/{Name}"
-<MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBackIos" OnClick='()=>NavigationManager.NavigateTo("")'>Back</MudButton>
+<MudButton Color="Color.Info" StartIcon="@Icons.Material.Filled.ArrowBackIos" OnClick='()=>NavigationManager.NavigateTo("")'>Back</MudButton>
 @if (pokemon != null)
 {
     <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
-    <MudText Align="Align.Center" Typo="Typo.h3" GutterBottom="true">@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
+    <MudStack Justify="Justify.Center" Row="true">
+        <MudText Typo="Typo.h3" GutterBottom="true" Color="Color.Primary">@BasicUtility.Capitalize(pokemon.Name)</MudText>
+        <MudText Typo="Typo.h3" GutterBottom="true" Color="Color.Secondary">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
+    </MudStack>
     <MudGrid>
         <MudItem xs="12" sm="6" md="4">
             <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" />
         </MudItem>
         <MudItem xs="12" sm="6" md="4">
-            <MudText Typo="Typo.h6">Stats</MudText>
+            <MudText Typo="Typo.h6" Color="Color.Info">Stats</MudText>
             @for (var s = 0; s < pokemon.Stats.Count; s++)
             {
                 var stat = pokemon.Stats[s];
                 <MudStack Row="true">
-                    <MudText Style="width:20px;white-space: nowrap;" Class="deep-purple-text" Typo="Typo.body1">@BasicUtility.Capitalize(@stat.Name)</MudText>
-                    <MudRating Style="margin-left:90px" ReadOnly="true" SelectedValue="@BasicUtility.GetNumStars(stat.Value)" MaxValue="10" />
+                    <MudText Style="width:125px;white-space: nowrap;" Typo="Typo.body1">@BasicUtility.Capitalize(@stat.Name)</MudText>
+                    <MudTooltip Text="@stat.Value.ToString()">
+                        <MudRating  ReadOnly="true" SelectedValue="@BasicUtility.GetNumStars(stat.Value)" MaxValue="10" />
+                    </MudTooltip>
                 </MudStack>
             }
-            <MudText Typo="Typo.h6" Class="mt-2">Type</MudText>
+            <MudText Typo="Typo.h6" Color="Color.Success" Class="mt-2">Type</MudText>
             @for (var j = 0; j < pokemon.Types.Count; j++)
             {
                 var type = pokemon.Types[j].Name;
                 <MudChip Class="@BasicUtility.GetChipClass(type)">@type</MudChip>
             }
-            <MudText Typo="Typo.h6" Class="mt-2">Weaknesses</MudText>
+            <MudText Typo="Typo.h6" Color="Color.Error" Class="mt-2">Weaknesses</MudText>
             @for (var j = 0; j < pokemon.Weakness.Count; j++)
             {
                 var weakness = pokemon.Weakness[j].Name;
@@ -52,7 +57,7 @@
                 NavigationManager.NavigateTo("");
             }
         }
-        
+
     }
 
 }

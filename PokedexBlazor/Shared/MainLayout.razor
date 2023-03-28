@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider IsDarkMode="@_isDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -8,8 +8,15 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Href="https://mudblazor.com/" Target="_blank" />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
+        <MudTooltip Text="@modeTooltipText">
+            <MudIconButton Icon="@modeIcon" Color="Color.Inherit" @onclick="ToggleDarkMode" />
+        </MudTooltip>
+        <MudTooltip Text="UI Framework for Blazor">
+            <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Href="https://mudblazor.com/" Target="_blank" />
+        </MudTooltip>
+        <MudTooltip Text="GitHub Repository">
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/quyentruong/PokedexBlazor" Target="_blank" />
+        </MudTooltip>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
@@ -25,7 +32,25 @@
 </MudLayout>
 
 @code {
+    private string modeIcon => _isDarkMode ? Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode;
+    private string modeTooltipText => _isDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme";
+    private bool _isDarkMode;
+    private string _isDarkModeKey = "IsDarkMode";
     bool _drawerOpen = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (await localStorage.ContainKeyAsync(_isDarkModeKey))
+        {
+            _isDarkMode = await localStorage.GetItemAsync<bool>(_isDarkModeKey);
+        }
+    }
+
+    async void ToggleDarkMode()
+    {
+        _isDarkMode = !_isDarkMode;
+        await localStorage.SetItemAsync<bool>(_isDarkModeKey, _isDarkMode);
+    }
 
     void DrawerToggle()
     {

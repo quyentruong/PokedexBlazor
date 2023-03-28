@@ -1,5 +1,5 @@
 ﻿@page "/pokemon/{Name}"
-<MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBackIos" @onclick='()=> NavigationManager.NavigateTo("/")'>Back</MudButton>
+<MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBackIos" OnClick='()=>NavigationManager.NavigateTo("")'>Back</MudButton>
 @if (pokemon != null)
 {
     <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
@@ -50,10 +50,10 @@
             pokemon = _.FirstOrDefault(p => p.Name.Equals(Name));
             if (pokemon == null)
             {
-                NavigationManager.NavigateTo("/Home");
+                NavigationManager.NavigateTo("");
             }
         }
-
+        
     }
 
 }

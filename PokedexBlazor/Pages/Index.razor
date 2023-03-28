@@ -146,7 +146,7 @@ else
                 }
                 catch (System.ArgumentOutOfRangeException)
                 {
-                    
+
                     var getPokemon = await pokeClient.GetResourceAsync<Pokemon>(i);
                     var _ = await pokeClient.GetResourceAsync(getPokemon.Types.Select(ty => ty.Type));
 
@@ -176,10 +176,10 @@ else
         await GetPokemonList(i).ConfigureAwait(false);
     }
 
-   
+
     public void HandleClick(string name)
     {
-        NavigationManager.NavigateTo($"/pokemon/{name}");
+        NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{name}");
     }
 
     public void Dispose()

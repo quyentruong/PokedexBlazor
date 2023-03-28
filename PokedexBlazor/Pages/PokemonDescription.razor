@@ -1,0 +1,59 @@
+﻿@page "/pokemon/{Name}"
+<MudButton Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowBackIos" @onclick='()=> NavigationManager.NavigateTo("/")'>Back</MudButton>
+@if (pokemon != null)
+{
+    <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
+    <MudText Align="Align.Center" Typo="Typo.h3" GutterBottom="true">@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudImage Fluid="true" Src="@pokemon.FrontDefault" Alt="@pokemon.Name" />
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudText Typo="Typo.h6">Stats</MudText>
+            @for (var s = 0; s < pokemon.Stats.Count; s++)
+            {
+                var stat = pokemon.Stats[s];
+                <MudStack Row="true">
+                    <MudText Style="width:20px;white-space: nowrap;" Class="deep-purple-text" Typo="Typo.body1">@BasicUtility.Capitalize(@stat.Name)</MudText>
+                    <MudRating Style="margin-left:90px" ReadOnly="true" SelectedValue="@BasicUtility.GetNumStars(stat.Value)" MaxValue="10" />
+                </MudStack>
+            }
+            <MudText Typo="Typo.h6" Class="mt-2">Type</MudText>
+            @for (var j = 0; j < pokemon.Types.Count; j++)
+            {
+                var type = pokemon.Types[j].Name;
+                <MudChip Class="@BasicUtility.GetChipClass(type)">@type</MudChip>
+            }
+            <MudText Typo="Typo.h6" Class="mt-2">Weaknesses</MudText>
+            @for (var j = 0; j < pokemon.Weakness.Count; j++)
+            {
+                var weakness = pokemon.Weakness[j].Name;
+                <MudChip Class="@BasicUtility.GetChipClass(weakness)">@weakness</MudChip>
+            }
+
+        </MudItem>
+    </MudGrid>
+}
+@code {
+    [Parameter]
+    public string Name { get; set; }
+    private string _pokemonListKey = "PokemonList";
+    public PokemonLite? pokemon;
+    private string renderKey = Guid.NewGuid().ToString();
+
+    PokeApiClient pokeClient = new PokeApiClient();
+    protected override async Task OnInitializedAsync()
+    {
+        if (await localStorage.ContainKeyAsync(_pokemonListKey))
+        {
+            var _ = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
+            pokemon = _.FirstOrDefault(p => p.Name.Equals(Name));
+            if (pokemon == null)
+            {
+                NavigationManager.NavigateTo("/Home");
+            }
+        }
+
+    }
+
+}

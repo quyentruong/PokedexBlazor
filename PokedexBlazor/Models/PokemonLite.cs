@@ -6,19 +6,22 @@ public class PokemonLite
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
-    public List<PokemonType> Types { get; set; }
     public string FrontDefault { get; set; } = string.Empty;
+    public List<PokemonLiteType> Types { get; set; } = null!;
+    public List<PokemonLiteStat> Stats { get; set; } = null!;
+    public List<PokemonWeakness> Weakness { get; set; } = null!;
 
     public PokemonLite()
     {
-        Types = new List<PokemonType>();
     }
 
-    public PokemonLite(int id, string name, List<PokemonType> types, string frontDefault)
+    public PokemonLite(Pokemon _pokemon, List<PokemonWeakness> weaknewss)
     {
-        Id = id;
-        Name = name;
-        Types = types;
-        FrontDefault = frontDefault;
+        Id = _pokemon.Id;
+        Name = _pokemon.Name;
+        FrontDefault = _pokemon.Sprites.Other.OfficialArtwork.FrontDefault;
+        Types = _pokemon.Types.Select(t => new PokemonLiteType(t)).ToList();
+        Stats = _pokemon.Stats.Select(stat => new PokemonLiteStat(stat)).ToList();
+        Weakness = weaknewss;
     }
 }

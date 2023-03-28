@@ -6,7 +6,7 @@
 <MudText Typo="Typo.h3" GutterBottom="true">Pokedex!</MudText>
 
 <div class="d-flex flex-column align-center">
-    <MudPagination @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="16" />
+    <MudPagination Disabled="@IsPaginationDisabled" @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="16" />
 </div>
 
 @if (pokemonList.Count >= _selectedPage * 12)
@@ -20,16 +20,17 @@
             var pokemon = pokemonList[i];
             if (pokemon.Id != 0)
             {
-                <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
-                    <MudImage Fluid="true" Src="@pokemon.FrontDefault" Alt="@pokemon.Name" />
-                    <MudText Typo="Typo.caption">@ConvertToHashCode(pokemon.Id)</MudText>
+                <MudItem xs="12" sm="6" md="4" lg="3" xl="2" @onclick="()=>HandleClick(pokemon.Name)">
+                    <MudImage Fluid="true" Src="@pokemon.FrontDefault" Alt="@pokemon.Name" Style="cursor:pointer" />
+                    <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
                     <MudText Typo="Typo.h6">@pokemon.Name</MudText>
                     @for (var j = 0; j < pokemon.Types.Count; j++)
                     {
-                        var type = pokemon.Types[j].Type.Name;
-                        <MudChip Class="@GetChipClass(type)">@type</MudChip>
+                        var type = pokemon.Types[j].Name;
+                        <MudChip Class="@BasicUtility.GetChipClass(type)">@type</MudChip>
                     }
                 </MudItem>
+
             }
         }
     </MudGrid>
@@ -53,8 +54,12 @@ else
     //var temp = await pokeClient.GetNamedResourcePageAsync<Pokemon>(12, 0);
     //https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
     private MudPagination? _mudPagination;
+    private bool IsPaginationDisabled = false;
+    private System.Timers.Timer timer;
     private int _selectedPage = 1;
     private int _pokemonListCount = 0;
+    private string _hashValidation = "94618ade389ea0003318d9bbc8d81e16";
+    private string _hashValidationKey = "HashValidation";
     private string _pokemonListCountKey = "PokemonListCount";
     private string _pokemonListKey = "PokemonList";
     private string _selectedPageKey = "SelectedPage";
@@ -64,7 +69,20 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
+        if (await localStorage.ContainKeyAsync(_hashValidationKey))
+        {
+            var _ = await localStorage.GetItemAsStringAsync(_hashValidationKey);
+            if (!_hashValidation.Equals(_))
+            {
+                await localStorage.RemoveItemsAsync(new List<string>() { _pokemonListCountKey, _pokemonListKey, _selectedPageKey });
+                await localStorage.SetItemAsStringAsync(_hashValidationKey, _hashValidation);
+            }
+        }
+        else
+        {
+            await localStorage.RemoveItemsAsync(new List<string>() { _pokemonListCountKey, _pokemonListKey, _selectedPageKey });
+            await localStorage.SetItemAsStringAsync(_hashValidationKey, _hashValidation);
+        }
         if (await localStorage.ContainKeyAsync(_pokemonListCountKey))
         {
             _pokemonListCount = int.Parse(await localStorage.GetItemAsStringAsync(_pokemonListCountKey));
@@ -85,10 +103,12 @@ else
             _mudPagination?.NavigateTo(_selectedPage - 1);
         }
 
+
     }
 
     private async Task GetPokemonList(int page)
     {
+        // one page has 12 pokemons
         _selectedPage = page;
         int startIndex = (page - 1) * 12 + 1;
         int endIndex = page * 12;
@@ -102,34 +122,38 @@ else
             }
         }
 
+        // pokemon api id start from 1
         for (var i = startIndex; i <= endIndex; i++)
         {
             // Check if click on page 3 and page 2 is empty
             if (pokemonList.Count() >= endIndex && pokemonList[i - 1] is PokemonLite && pokemonList[i - 1].Id == 0)
             {
+
                 var getPokemon = await pokeClient.GetResourceAsync<Pokemon>(i);
-                pokemonList[i - 1].Id = getPokemon.Id;
-                pokemonList[i - 1].Name = getPokemon.Name;
-                pokemonList[i - 1].FrontDefault = getPokemon.Sprites.Other.OfficialArtwork.FrontDefault;
-                pokemonList[i - 1].Types = getPokemon.Types;
+                var _ = await pokeClient.GetResourceAsync(getPokemon.Types.Select(ty => ty.Type));
+
+                List<PokemonWeakness> weakness = _.SelectMany(_ => _.DamageRelations.DoubleDamageFrom)
+                                      .Select(_ => new PokemonWeakness(_.Name))
+                                      .ToList();
+                pokemonList[i - 1] = new PokemonLite(getPokemon, weakness);
             }
             else
             {
                 try
                 {
                     // trick to not call api to check if pokemon exist
-                    var _ = pokemonList[i - 1].Id;
+                    _ = pokemonList[i - 1].Id;
                 }
                 catch (System.ArgumentOutOfRangeException)
                 {
+                    
                     var getPokemon = await pokeClient.GetResourceAsync<Pokemon>(i);
-                    pokemonList.Add(new PokemonLite()
-                        {
-                            Id = getPokemon.Id,
-                            Name = getPokemon.Name,
-                            FrontDefault = getPokemon.Sprites.Other.OfficialArtwork.FrontDefault,
-                            Types = getPokemon.Types
-                        });
+                    var _ = await pokeClient.GetResourceAsync(getPokemon.Types.Select(ty => ty.Type));
+
+                    List<PokemonWeakness> weakness = _.SelectMany(_ => _.DamageRelations.DoubleDamageFrom)
+                                          .Select(_ => new PokemonWeakness(_.Name))
+                                          .ToList();
+                    pokemonList.Add(new PokemonLite(getPokemon, weakness));
                 }
             }
         }
@@ -137,15 +161,13 @@ else
         renderKey = Guid.NewGuid().ToString();
         StateHasChanged();
 
-
-
         if (_pokemonListCount < pokemonList.Count)
         {
             _pokemonListCount = pokemonList.Count(x => x.Id != 0);
             await localStorage.SetItemAsStringAsync(_pokemonListCountKey, _pokemonListCount.ToString());
             await localStorage.SetItemAsync<List<PokemonLite>>(_pokemonListKey, pokemonList);
-            Console.WriteLine(pokemonList.Count);
         }
+
     }
 
     private async void PageChanged(int i)
@@ -154,16 +176,10 @@ else
         await GetPokemonList(i).ConfigureAwait(false);
     }
 
-
-    private string GetChipClass(string context)
+   
+    public void HandleClick(string name)
     {
-        context = context.ToLower();
-        return $"background-color-{context}";
-    }
-
-    private static string ConvertToHashCode(int number)
-    {
-        return "#" + number.ToString().Trim().PadLeft(4, '0');
+        NavigationManager.NavigateTo($"/pokemon/{name}");
     }
 
     public void Dispose()

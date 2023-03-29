@@ -4,8 +4,8 @@ namespace PokedexBlazor.Models;
 
 public class PokemonLiteStat
 {
-    public string Name { get; set; } = string.Empty;
-    public int Value { get; set; }
+    public string N { get; set; } = string.Empty;
+    public int V { get; set; }
 
     public PokemonLiteStat()
     {
@@ -13,7 +13,7 @@ public class PokemonLiteStat
 
     public PokemonLiteStat(PokemonStat _pokemonStat)
     {
-        Name = _pokemonStat.Stat.Name;
-        Value = _pokemonStat.BaseStat;
+        N = _pokemonStat.Stat.Name;
+        V = _pokemonStat.BaseStat;
     }
 }

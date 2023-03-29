@@ -62,7 +62,7 @@ else
     private int _selectedPage = 1;
     private int _pokemonListCount = 0;
     private bool _isLoading = false;
-    private string _hashValidation = "92d95tde99ob1003418d9byc5d31e16";
+    private string _hashValidation = "92d94tde99ob1003418d9byc5d31e16";
     private string _hashValidationKey = "HashValidation";
     private string _pokemonListCountKey = "PokemonListCount";
     private string _pokemonListKey = "PokemonList";
@@ -124,47 +124,22 @@ else
         _endIndex = endIndex - 1;
         StateHasChanged();
 
-        // Skip first load of page 1
-        if (pokemonList.Count() + 12 < endIndex)
+
+        for (var i = pokemonList.Count(); i < endIndex; i++)
         {
-            for (var i = pokemonList.Count(); i < endIndex - 12; i++)
-            {
-                pokemonList.Add(new PokemonLite());
-            }
+            pokemonList.Add(new PokemonLite());
         }
 
         var willFetch = false;
         // pokemon api id start from 1
-        for (var i = startIndex; i <= endIndex; i++)
+        for (var i = startIndex - 1; i < endIndex; i++)
         {
-            // Check if click on page 3 and page 2 is empty
-            if (pokemonList.Count() >= endIndex && pokemonList[i - 1] is PokemonLite && pokemonList[i - 1].Id == 0)
+            if (pokemonList[i].Id == 0)
             {
                 willFetch = true;
-                var getPokemon = await pokeClient.GetResourceAsync<Pokemon>(i);
+                var getPokemon = await pokeClient.GetResourceAsync<Pokemon>(i + 1);
                 var _ = await pokeClient.GetResourceAsync(getPokemon.Types.Select(ty => ty.Type));
-                pokemonList[i - 1] = new PokemonLite(getPokemon, _);
-            }
-            else
-            {
-                try
-                {
-                    // trick to not call api to check if pokemon exist
-                    _ = pokemonList[i - 1].Id;
-                }
-                // TODO: Need to fix this
-                catch (System.ArgumentOutOfRangeException)
-                {
-                    willFetch = true;
-                    var getPokemon = await pokeClient.GetResourceAsync<Pokemon>(i);
-                    var _ = await pokeClient.GetResourceAsync(getPokemon.Types.Select(ty => ty.Type));
-                    pokemonList.Add(new PokemonLite(getPokemon, _));
-                    if (i > 12 && pokemonList[i - 1].Id == pokemonList[i - 2].Id)
-                    {
-                        pokemonList.RemoveAt(i - 1);
-                        i--;
-                    }
-                }
+                pokemonList[i].Initialize(getPokemon, _);
             }
             if (!willFetch) break;
         }

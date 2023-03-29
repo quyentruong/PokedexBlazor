@@ -1,4 +1,5 @@
 ﻿using PokeApiNet;
+using System.Collections.Generic;
 
 namespace PokedexBlazor.Models;
 
@@ -28,6 +29,11 @@ public class PokemonLite
     }
 
     public PokemonLite(Pokemon _pokemon, List<PokeApiNet.Type> _types)
+    {
+        Initialize(_pokemon, _types);
+    }
+
+    public void Initialize(Pokemon _pokemon, List<PokeApiNet.Type> _types)
     {
         Id = _pokemon.Id;
         N = _pokemon.Name;

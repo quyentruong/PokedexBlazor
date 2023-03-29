@@ -64,7 +64,7 @@ else
 
     private int _selectedPage = 1;
     private int _pokemonListCount = 0;
-    private string _hashValidation = "95658ade299oa1003318d9byc8d81e16";
+    private string _hashValidation = "95d68ade399oa1003318d9byc8d81e16";
     private string _hashValidationKey = "HashValidation";
     private string _pokemonListCountKey = "PokemonListCount";
     private string _pokemonListKey = "PokemonList";
@@ -96,7 +96,10 @@ else
 
         if (await localStorage.ContainKeyAsync(_pokemonListKey))
         {
-            pokemonList = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
+            var _ = await localStorage.GetItemAsStringAsync(_pokemonListKey);
+            var json = BasicUtility.DecompressStringDeflate(_);
+            pokemonList = JsonConvert.DeserializeObject<List<PokemonLite>>(json)!;
+            //pokemonList = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
         }
         else
         {
@@ -165,7 +168,10 @@ else
         {
             _pokemonListCount = pokemonList.Count(x => x.Id != 0);
             await localStorage.SetItemAsStringAsync(_pokemonListCountKey, _pokemonListCount.ToString());
-            await localStorage.SetItemAsync<List<PokemonLite>>(_pokemonListKey, pokemonList);
+            var json = JsonConvert.SerializeObject(pokemonList);
+            var compress = BasicUtility.CompressStringDeflate(json);
+            await localStorage.SetItemAsStringAsync(_pokemonListKey, compress);
+            //await localStorage.SetItemAsync<List<PokemonLite>>(_pokemonListKey, pokemonList);
         }
 
     }
@@ -175,7 +181,9 @@ else
 
         await localStorage.SetItemAsStringAsync(_selectedPageKey, i.ToString());
         await GetPokemonList(i).ConfigureAwait(false);
+#pragma warning disable CS8602, BL0005
         _mudPagination.Selected = i;
+#pragma warning restore CS8602, BL0005
     }
 
 

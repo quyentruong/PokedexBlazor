@@ -56,8 +56,11 @@
     {
         if (await localStorage.ContainKeyAsync(_pokemonListKey))
         {
-            var _ = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
-            pokemon = _.FirstOrDefault(p => p.N.Equals(Name));
+            //var _ = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
+            var compress = await localStorage.GetItemAsStringAsync(_pokemonListKey);
+            var json = BasicUtility.DecompressStringDeflate(compress);
+            var _ = JsonConvert.DeserializeObject<List<PokemonLite>>(json);
+            pokemon = _?.FirstOrDefault(p => p.N.Equals(Name));
             if (pokemon == null)
             {
                 NavigationManager.NavigateTo("");

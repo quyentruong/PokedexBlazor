@@ -50,8 +50,6 @@
     public string Name { get; set; } = string.Empty;
     private string _pokemonListKey = "PokemonList";
     public PokemonLite? pokemon;
-
-    PokeApiClient pokeClient = new PokeApiClient();
     protected override async Task OnInitializedAsync()
     {
         if (await localStorage.ContainKeyAsync(_pokemonListKey))
@@ -68,5 +66,4 @@
         }
 
     }
-
 }

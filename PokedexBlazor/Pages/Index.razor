@@ -1,4 +1,5 @@
 ﻿@page "/"
+@implements IDisposable
 
 <PageTitle>Pokedex</PageTitle>
 
@@ -15,18 +16,18 @@
 </div>
 
 
-@if (!_isLoading && pokemonList != null && pokemonList.Count > _endIndex && pokemonList[_endIndex].Id != 0)
+@if (!_isLoading && PokemonTransferService.List.Count > _endIndex && PokemonTransferService.List[_endIndex].Id != 0)
 {
     int startIndex = (_selectedPage - 1) * 12;
     int endIndex = _selectedPage * 12;
     <MudGrid key="@renderKey">
         @for (var i = startIndex; i < endIndex; i++)
         {
-            var pokemon = pokemonList[i];
+            var pokemon = PokemonTransferService.List[i];
             if (pokemon.Id != 0)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
-                    <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.N" Style="cursor:pointer" @onclick="()=>HandleClick(pokemon.N)" />
+                    <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.N" Style="cursor:pointer" @onclick="()=>HandleClick(pokemon)" />
                     <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
                     <MudText Typo="Typo.h6">@pokemon.N</MudText>
                     @for (var j = 0; j < pokemon.Ts.Count; j++)
@@ -59,46 +60,25 @@ else
     private int _endIndex = 0;
     private int _selectedPage = 1;
     private bool _isLoading = false;
-    private string _hashValidation = "92d95tde99ob2103428d9byc5d31e16";
-    private string _hashValidationKey = "HashValidation";
     private string _pokemonListKey = "PokemonList";
     private string _selectedPageKey = "SelectedPage";
-    List<PokemonLite> pokemonList = new List<PokemonLite>();
     PokeApiClient pokeClient = new PokeApiClient();
     private string renderKey = Guid.NewGuid().ToString();
 
     protected override async Task OnInitializedAsync()
     {
-        // Check validation key if not existed or missmatch, delete all local storage
-        bool validationMatch = await localStorage.ContainKeyAsync(_hashValidationKey) &&
-                        _hashValidation.Equals(await localStorage.GetItemAsStringAsync(_hashValidationKey));
-        if (!validationMatch)
-        {
-            await localStorage.ClearAsync();
-            await localStorage.SetItemAsStringAsync(_hashValidationKey, _hashValidation);
-        }
 
-        // Check cache of pokemon list if existed
-        // 1. decompress string
-        // 2. deserialize to list pokemon
-        if (await localStorage.ContainKeyAsync(_pokemonListKey))
-        {
-            var _ = await localStorage.GetItemAsStringAsync(_pokemonListKey);
-            var json = BasicUtility.DecompressStringDeflate(_);
-            pokemonList = JsonConvert.DeserializeObject<List<PokemonLite>>(json)!;
-            //pokemonList = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
-        }
-        else
+        if (PokemonTransferService.List.Count == 0)
         {
             await GetPokemonList(1);
         }
-
+        
         if (await localStorage.ContainKeyAsync(_selectedPageKey))
         {
             _selectedPage = int.Parse(await localStorage.GetItemAsStringAsync(_selectedPageKey));
             _mudPagination?.NavigateTo(_selectedPage - 1);
         }
-
+        
     }
 
     private async Task GetPokemonList(int page)
@@ -112,9 +92,9 @@ else
         _endIndex = endIndex - 1;
         StateHasChanged();
 
-        for (var i = pokemonList.Count(); i < endIndex; i++)
+        for (var i = PokemonTransferService.List.Count; i < endIndex; i++)
         {
-            pokemonList.Add(new PokemonLite());
+            PokemonTransferService.Add(new PokemonLite());
         }
 
         // key to check if call api needed
@@ -122,14 +102,14 @@ else
         // pokemon api id start from 1
         for (var i = startIndex - 1; i < endIndex; i++)
         {
-            if (pokemonList[i].Id == 0)
+            if (PokemonTransferService.List[i].Id == 0)
             {
                 willFetch = true;
                 // get detail of a pokemon
                 var getPokemon = await pokeClient.GetResourceAsync<Pokemon>(i + 1);
                 // get a list of pokemontype that contains damage relation
                 var _ = await pokeClient.GetResourceAsync(getPokemon.Types.Select(ty => ty.Type));
-                pokemonList[i].Initialize(getPokemon, _);
+                PokemonTransferService.List[i].Initialize(getPokemon, _);
             }
             // fetch not needed, break out of loop
             if (!willFetch) break;
@@ -139,7 +119,7 @@ else
         {
             // 1. serilize pokemon list
             // 2. compress string
-            var json = JsonConvert.SerializeObject(pokemonList);
+            var json = JsonConvert.SerializeObject(PokemonTransferService.List);
             var compress = BasicUtility.CompressStringDeflate(json);
             await localStorage.SetItemAsStringAsync(_pokemonListKey, compress);
             //await localStorage.SetItemAsync<List<PokemonLite>>(_pokemonListKey, pokemonList);
@@ -160,14 +140,14 @@ else
         await GetPokemonList(i).ConfigureAwait(false);
     }
 
-    public void HandleClick(string N)
+    public void HandleClick(PokemonLite p)
     {
-        NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{N}");
+        PokemonTransferService.Data = p;
+        NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{p.N}");
     }
 
     public void Dispose()
     {
-        // dispose the client when the component is disposed
         pokeClient.Dispose();
     }
 }

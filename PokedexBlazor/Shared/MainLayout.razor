@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@implements IDisposable
 
 <MudThemeProvider IsDarkMode="@_isDarkMode" />
 <MudDialogProvider />
@@ -36,16 +37,38 @@
     private string modeTooltipText => _isDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme";
     private bool _isDarkMode;
     private string _isDarkModeKey = "IsDarkMode";
+    private string _hashValidation = "92d95tde99ob2103428d9byc2d31e26";
+    private string _hashValidationKey = "HashValidation";
+    private string _pokemonListKey = "PokemonList";
     bool _drawerOpen = false;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        if (await localStorage.ContainKeyAsync(_isDarkModeKey))
+        PokemonTransferService.OnChange += StateHasChanged;
+        // Check validation key if not existed or missmatch, delete all local storage
+        bool validationMatch = localStorageSync.ContainKey(_hashValidationKey) &&
+                        _hashValidation.Equals(localStorageSync.GetItemAsString(_hashValidationKey));
+        if (!validationMatch)
         {
-            _isDarkMode = await localStorage.GetItemAsync<bool>(_isDarkModeKey);
+            localStorageSync.Clear();
+            localStorageSync.SetItemAsString(_hashValidationKey, _hashValidation);
+        }
+        // Check cache of pokemon list if existed
+        // 1. decompress string
+        // 2. deserialize to list pokemon
+        if (localStorageSync.ContainKey(_pokemonListKey))
+        {
+            var _ = localStorageSync.GetItemAsString(_pokemonListKey);
+            var json = BasicUtility.DecompressStringDeflate(_);
+            PokemonTransferService.List = JsonConvert.DeserializeObject<List<PokemonLite>>(json)!;
+        }
+        if (localStorageSync.ContainKey(_isDarkModeKey))
+        {
+            _isDarkMode = localStorageSync.GetItem<bool>(_isDarkModeKey);
         }
     }
 
+ 
     async void ToggleDarkMode()
     {
         _isDarkMode = !_isDarkMode;
@@ -55,5 +78,10 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    public void Dispose()
+    {
+        PokemonTransferService.OnChange -= StateHasChanged;
     }
 }

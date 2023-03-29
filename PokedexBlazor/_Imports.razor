@@ -8,10 +8,14 @@
 @using Microsoft.JSInterop
 @using MudBlazor
 @using PokedexBlazor
+@using PokedexBlazor.Services;
 @using PokedexBlazor.Shared
 @using PokeApiNet
 @using PokedexBlazor.Models
 @using PokedexBlazor.Utils
 @using Newtonsoft.Json
+@using System.Collections.Specialized;
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorageSync
 @inject NavigationManager NavigationManager
+@inject PokemonTransferService PokemonTransferService

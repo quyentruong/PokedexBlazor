@@ -1,4 +1,5 @@
 ﻿@page "/pokemon/{Name}"
+
 <MudButton Color="Color.Info" StartIcon="@Icons.Material.Filled.ArrowBackIos" OnClick='()=>NavigationManager.NavigateTo("")'>Back</MudButton>
 @if (pokemon != null)
 {
@@ -50,20 +51,24 @@
     public string Name { get; set; } = string.Empty;
     private string _pokemonListKey = "PokemonList";
     public PokemonLite? pokemon;
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        if (await localStorage.ContainKeyAsync(_pokemonListKey))
+        pokemon = PokemonTransferService.Data;
+        if (pokemon == null || !pokemon.N.Equals(Name))
         {
-            //var _ = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
-            var compress = await localStorage.GetItemAsStringAsync(_pokemonListKey);
-            var json = BasicUtility.DecompressStringDeflate(compress);
-            var _ = JsonConvert.DeserializeObject<List<PokemonLite>>(json);
-            pokemon = _?.FirstOrDefault(p => p.N.Equals(Name));
+            pokemon = PokemonTransferService.List.FirstOrDefault(p => p.N.Equals(Name));
             if (pokemon == null)
             {
                 NavigationManager.NavigateTo("");
             }
         }
-
+        //if (await localStorage.ContainKeyAsync(_pokemonListKey))
+        //{
+            //var _ = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
+            //var compress = await localStorage.GetItemAsStringAsync(_pokemonListKey);
+            //var json = BasicUtility.DecompressStringDeflate(compress);
+            //var _ = JsonConvert.DeserializeObject<List<PokemonLite>>(json);
+            
+        //}
     }
 }

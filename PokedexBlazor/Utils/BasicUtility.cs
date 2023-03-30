@@ -9,7 +9,7 @@ public class BasicUtility
 {
     public static string PokemonImage(int id)
     {
-        return $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{id}.png";
+        return $"https://raw.githubusercontent.com/quyentruong/PokemonSprites/main/sprites/pokemon/other/official-artwork/{id}.webp";
     }
 
     public static string ConvertToHashCode(int number)

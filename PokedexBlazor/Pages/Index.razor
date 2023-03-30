@@ -54,8 +54,6 @@ else
 
 
 @code {
-    //var temp = await pokeClient.GetNdResourcePageAsync<Pokemon>(12, 0);
-    //https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
     private MudPagination? _mudPagination;
     private bool IsPaginationDisabled = false;
     private int _endIndex = 0;
@@ -68,7 +66,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-
         if (PokemonTransferService.List.Count == 0)
         {
             for (var i = 0; i < 1000; i++)
@@ -139,8 +136,9 @@ else
 
     private async void PageChanged(int i)
     {
+        _mudPagination?.NavigateTo(i - 1);
 #pragma warning disable CS8602, BL0005
-        _mudPagination.Selected = i;
+        //_mudPagination.Selected = i;
 #pragma warning restore CS8602, BL0005
         await localStorage.SetItemAsStringAsync(_selectedPageKey, i.ToString());
         await GetPokemonList(i).ConfigureAwait(false);

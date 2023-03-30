@@ -51,7 +51,7 @@
     public string Name { get; set; } = string.Empty;
     private string _pokemonListKey = "PokemonList";
     public PokemonLite? pokemon;
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         pokemon = PokemonTransferService.Data;
         if (pokemon == null || !pokemon.N.Equals(Name))

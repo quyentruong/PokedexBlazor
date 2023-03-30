@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using PokeApiNet;
 using PokedexBlazor.Utils;
+using PokedexBlazor.Models;
 
 //PokeApiClient pokeClient = new PokeApiClient();
 //Pokemon pikachu = await pokeClient.GetResourceAsync<Pokemon>("Mewtwo");

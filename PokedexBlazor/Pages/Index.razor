@@ -6,9 +6,9 @@
 <MudText Typo="Typo.h3" GutterBottom="true">Pokedex!</MudText>
 
 <div class="d-flex flex-column align-center">
-    <MudPagination Disabled="@IsPaginationDisabled" @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="84" />
+    <MudPagination Disabled="@IsPaginationDisabled" @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="85" />
     <MudSelect T="int" Value="@_selectedPage" ValueChanged="PageChanged" Label="Jump Page" AnchorOrigin="Origin.BottomCenter">
-        @for (var i = 1; i <= 84; i++)
+        @for (var i = 1; i <= 85; i++)
         {
             <MudSelectItem T="int" Value="@i" />
         }
@@ -20,6 +20,7 @@
 {
     int startIndex = (_selectedPage - 1) * 12;
     int endIndex = _selectedPage * 12;
+    if (endIndex > 1010) endIndex = 1010;
     <MudGrid key="@renderKey">
         @for (var i = startIndex; i < endIndex; i++)
         {
@@ -70,15 +71,19 @@ else
 
         if (PokemonTransferService.List.Count == 0)
         {
+            for (var i = 0; i < 1000; i++)
+            {
+                PokemonTransferService.Add(new PokemonLite());
+            }
             await GetPokemonList(1);
         }
-        
+
         if (await localStorage.ContainKeyAsync(_selectedPageKey))
         {
             _selectedPage = int.Parse(await localStorage.GetItemAsStringAsync(_selectedPageKey));
             _mudPagination?.NavigateTo(_selectedPage - 1);
         }
-        
+
     }
 
     private async Task GetPokemonList(int page)
@@ -89,6 +94,7 @@ else
         _selectedPage = page;
         int startIndex = (page - 1) * 12 + 1;
         int endIndex = page * 12;
+        if (endIndex > 1010) endIndex = 1010;
         _endIndex = endIndex - 1;
         StateHasChanged();
 
@@ -138,6 +144,7 @@ else
 #pragma warning restore CS8602, BL0005
         await localStorage.SetItemAsStringAsync(_selectedPageKey, i.ToString());
         await GetPokemonList(i).ConfigureAwait(false);
+        
     }
 
     public void HandleClick(PokemonLite p)

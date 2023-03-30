@@ -28,13 +28,13 @@
             if (pokemon.Id != 0)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
-                    <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.N" Style="cursor:pointer" @onclick="()=>HandleClick(pokemon)" />
+                    <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.N" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
                     <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
-                    <MudText Typo="Typo.h6">@pokemon.N</MudText>
+                    <MudText Typo="Typo.h6">@BasicUtility.Capitalize(pokemon.N)</MudText>
                     @for (var j = 0; j < pokemon.Ts.Count; j++)
                     {
                         var type = pokemon.Ts[j];
-                        <MudChip Class="@BasicUtility.GetChipClass(type)">@type</MudChip>
+                        <MudChip Class="@BasicUtility.GetChipClass(type)" Style="text-transform:capitalize">@type</MudChip>
                     }
                 </MudItem>
 
@@ -144,7 +144,7 @@ else
 #pragma warning restore CS8602, BL0005
         await localStorage.SetItemAsStringAsync(_selectedPageKey, i.ToString());
         await GetPokemonList(i).ConfigureAwait(false);
-        
+
     }
 
     public void HandleClick(PokemonLite p)

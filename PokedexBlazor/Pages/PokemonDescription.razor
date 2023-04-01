@@ -2,7 +2,6 @@
 @page "/pokemon/{Id:int?}"
 @implements IDisposable
 
-<MudButton Color="Color.Info" StartIcon="@Icons.Material.Filled.ArrowBackIos" OnClick='()=>NavigationManager.NavigateTo("")'>Back</MudButton>
 @if (pokemon != null)
 {
     <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
@@ -71,13 +70,19 @@
             {
                 <MudChip Class="@BasicUtility.GetChipClass(weakness)" Style="text-transform:capitalize">@weakness</MudChip>
             }
-           
+
         </MudItem>
     </MudGrid>
-    <MudStack Justify="Justify.SpaceBetween" Class="mt-5" Row="true">
-        <MudButton Disabled="isPreviousPokemon" Color="Color.Info" StartIcon="@Icons.Material.Filled.ArrowBackIos" @onclick="()=>HandleClick(previousPokemon)">Previous</MudButton>
-        <MudButton Disabled="isNextPokemon" Color="Color.Info" EndIcon="@Icons.Material.Filled.ArrowForwardIos" @onclick="()=>HandleClick(nextPokemon)">Next</MudButton>
-    </MudStack>
+
+
+    <div style="margin-bottom:100px"></div>
+    <MudAppBar Bottom="true" Elevation="1" Dense="true" Class="mt-5">
+        <MudIconButton Disabled="isPreviousPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-left" @onclick="()=>HandleClick(previousPokemon)" />
+        <MudSpacer />
+        <MudIconButton Style='color:azure' Icon="fa-solid fa-home" OnClick='()=>NavigationManager.NavigateTo("")' />
+        <MudSpacer />
+        <MudIconButton Disabled="isNextPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-right" @onclick="()=>HandleClick(nextPokemon)" />
+    </MudAppBar>
 }
 @code {
     [Parameter]
@@ -119,7 +124,8 @@
         if (_ != null)
         {
             nextPokemon = _;
-        } else
+        }
+        else
         {
             isNextPokemon = true;
         }

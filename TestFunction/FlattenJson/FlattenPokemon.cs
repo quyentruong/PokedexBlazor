@@ -62,7 +62,7 @@ internal class FlattenPokemon
             //Console.WriteLine($"{pokemon.name} has the following stats:");
             foreach (var stat in pokemon.pokemon_v2_pokemonstats)
             {
-                list[^1].Stats.Add(new PokemonDiet.PokemonDietStat()
+                list[^1].Stats.Add(new PokemonDietStat()
                 {
                     Name = stat.pokemon_v2_stat.name,
                     Value = stat.base_stat

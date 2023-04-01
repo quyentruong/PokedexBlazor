@@ -13,10 +13,10 @@ public class PokemonDiet
     public List<string> Types { get; set; }
     public SortedSet<string> Strength { get; set; } = new();
     public SortedSet<string> Weakness { get; set; } = new();
+}
 
-    public class PokemonDietStat
-    {
-        public string Name { get; set; }
-        public int Value { get; set; }
-    }
+public class PokemonDietStat
+{
+    public string Name { get; set; }
+    public double Value { get; set; }
 }

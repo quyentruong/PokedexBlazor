@@ -1,5 +1,6 @@
 ﻿@page "/pokemon/{Name?}"
 @page "/pokemon/{Id:int?}"
+@implements IDisposable
 
 <MudButton Color="Color.Info" StartIcon="@Icons.Material.Filled.ArrowBackIos" OnClick='()=>NavigationManager.NavigateTo("")'>Back</MudButton>
 @if (pokemon != null)
@@ -12,16 +13,40 @@
     <MudGrid>
         <MudItem xs="12" sm="6" md="4">
             <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" />
+            <MudPaper Style="border-radius: 10px;background-color:#30a7d7;">
+                <MudStack Row="true" Justify="Justify.SpaceBetween">
+                    <MudStack Class="ml-2" AlignItems="AlignItems.Center">
+                        <MudText Style="color:aliceblue;margin-bottom:-10px">Total Stats</MudText>
+                        <MudText Style="color:#212121">@_totalStat</MudText>
+                    </MudStack>
+                    <MudStack AlignItems="AlignItems.Center">
+                        <MudText Style="color:aliceblue;margin-bottom:-10px">Base Exp</MudText>
+                        <MudText Style="color:#212121">@BasicUtility.BaseExp(pokemon.BaseExperience)</MudText>
+                    </MudStack>
+                    <MudStack AlignItems="AlignItems.Center">
+                        <MudText Style="color:aliceblue;margin-bottom:-10px">Height</MudText>
+                        <MudText Style="color:#212121">@BasicUtility.ConvertDmToFeetAndInches(pokemon.Height)</MudText>
+                    </MudStack>
+                    <MudStack Class="mr-2" AlignItems="AlignItems.Center">
+                        <MudText Style="color:aliceblue;margin-bottom:-10px">Weight</MudText>
+                        <MudText Style="color:#212121">@BasicUtility.ConvertHgToLbs(pokemon.Weight)</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudPaper>
         </MudItem>
         <MudItem xs="12" sm="6" md="4">
             <MudText Typo="Typo.h6" Color="Color.Info">Stats</MudText>
             @for (var s = 0; s < pokemon.Stats.Count; s++)
             {
                 var stat = pokemon.Stats[s];
-                <MudStack Row="true">
-                    <MudText Style="max-width:10px;white-space: nowrap;margin-right:93px" Typo="Typo.body1">@BasicUtility.Capitalize(@stat.Name)</MudText>
+                var fi = _fullIcon[s];
+                var ei = _emptyIcon[s];
+                var color = PokemonService.IsDarkMode ? _lightColor[s] : _darkColor[s];
+                color = $"color:{color}";
+                <MudStack Class="mb-4" Row="true">
+                    <MudText Style="max-width:10px;white-space: nowrap;margin-right:95px" Typo="Typo.body1">@BasicUtility.Capitalize(@stat.Name)</MudText>
                     <MudTooltip Text="@stat.Value.ToString()">
-                        <MudRating ReadOnly="true" SelectedValue="@BasicUtility.GetNumStars(stat.Value)" MaxValue="10" />
+                        <MudRating Style="@color" FullIcon="@fi" EmptyIcon="@ei" ReadOnly="true" SelectedValue="@BasicUtility.GetNumStars(stat.Value)" MaxValue="10" />
                     </MudTooltip>
                 </MudStack>
             }
@@ -36,7 +61,7 @@
                 <MudChip Class="@BasicUtility.GetChipClass(type)" Style="text-transform:capitalize">@type</MudChip>
             }
             <MudText Typo="Typo.h6" Color="Color.Tertiary" Class="mt-2">Strong Against</MudText>
-            
+
             @foreach (var strong in pokemon.Strength)
             {
                 <MudChip Class="@BasicUtility.GetChipClass(strong)" Style="text-transform:capitalize">@strong</MudChip>
@@ -46,18 +71,37 @@
             {
                 <MudChip Class="@BasicUtility.GetChipClass(weakness)" Style="text-transform:capitalize">@weakness</MudChip>
             }
-
+           
         </MudItem>
     </MudGrid>
+    <MudStack Justify="Justify.SpaceBetween" Class="mt-5" Row="true">
+        <MudButton Disabled="isPreviousPokemon" Color="Color.Info" StartIcon="@Icons.Material.Filled.ArrowBackIos" @onclick="()=>HandleClick(previousPokemon)">Previous</MudButton>
+        <MudButton Disabled="isNextPokemon" Color="Color.Info" EndIcon="@Icons.Material.Filled.ArrowForwardIos" @onclick="()=>HandleClick(nextPokemon)">Next</MudButton>
+    </MudStack>
 }
 @code {
     [Parameter]
     public string Name { get; set; } = string.Empty;
     [Parameter]
     public int Id { get; set; }
-    public PokemonDiet? pokemon;
+    private double _totalStat = 0;
+    private List<string> _darkColor = new() { Colors.Red.Darken4, Colors.Brown.Darken4, Colors.BlueGrey.Darken4,
+                                                Colors.DeepOrange.Darken4, Colors.Green.Darken4, Colors.Indigo.Darken4, Colors.Blue.Darken4 };
+    private List<string> _lightColor = new() { Colors.Red.Lighten4, Colors.Brown.Lighten4, Colors.BlueGrey.Lighten4,
+                                                Colors.DeepOrange.Lighten4, Colors.Green.Lighten4, Colors.Indigo.Lighten4, Colors.Blue.Lighten4 };
+    private List<string> _fullIcon = new() { "fa-solid fa-heart", "fa-solid fa-sword", "fa-solid fa-shield", "fa-solid fa-staff", "fa-solid fa-shield-cat", "fa-solid fa-rabbit-running", "fa-solid fa-thumbs-up" };
+    private List<string> _emptyIcon = new() { "fa-thin fa-heart", "fa-thin fa-sword", "fa-thin fa-shield", "fa-thin fa-staff", "fa-thin fa-shield-cat", "fa-thin fa-rabbit-running", "fa-thin fa-thumbs-up" };
+    private PokemonDiet? pokemon;
+    private bool isPreviousPokemon;
+    private bool isNextPokemon;
+    private PokemonDiet nextPokemon = null!;
+    private PokemonDiet previousPokemon = null!;
+
     protected override async Task OnParametersSetAsync()
     {
+        isPreviousPokemon = false;
+        isNextPokemon = false;
+        PokemonService.OnChange += StateHasChanged;
         while (PokemonService.PokemonList.Count == 0)
         {
             await Task.Delay(500);
@@ -71,5 +115,51 @@
                 NavigationManager.NavigateTo("");
             }
         }
+        var _ = PokemonService.PokemonList.FirstOrDefault(p => p.Id == pokemon?.Id + 1);
+        if (_ != null)
+        {
+            nextPokemon = _;
+        } else
+        {
+            isNextPokemon = true;
+        }
+        _ = PokemonService.PokemonList.FirstOrDefault(p => p.Id == pokemon?.Id - 1);
+        if (_ != null)
+        {
+            previousPokemon = _;
+        }
+        else
+        {
+            isPreviousPokemon = true;
+        }
+        _totalStat = pokemon!.Stats.Sum(x => x.Value);
+
+        if (pokemon.Stats.Count == 7)
+        {
+            pokemon.Stats[^1] = (new PokemonDietStat()
+                {
+                    Name = "Avg. Stats",
+                    Value = Math.Round(pokemon.Stats.Average(x => x.Value))
+                });
+        }
+        else
+        {
+            pokemon.Stats.Add(new PokemonDietStat()
+                {
+                    Name = "Avg. Stats",
+                    Value = Math.Round(pokemon.Stats.Average(x => x.Value))
+                });
+        }
+    }
+
+    public void HandleClick(PokemonDiet p)
+    {
+        PokemonService.Data = p;
+        NavigationManager.NavigateTo($"pokemon/{p.Name}");
+    }
+
+    public void Dispose()
+    {
+        PokemonService.OnChange -= StateHasChanged;
     }
 }

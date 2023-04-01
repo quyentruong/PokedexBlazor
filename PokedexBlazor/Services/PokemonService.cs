@@ -16,6 +16,11 @@ public class PokemonService
         }
     }
 
+    private bool _isDarkMode = false;
+
+    public bool IsDarkMode
+    { get => _isDarkMode; set { _isDarkMode = value; NotifyStateChanged(); } }
+
     private Dictionary<string, TypeDamageRelation> _typeDamageDict = new();
 
     public Dictionary<string, TypeDamageRelation> TypeDamageDict

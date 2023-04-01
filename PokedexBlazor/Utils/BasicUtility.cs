@@ -23,9 +23,9 @@ public class BasicUtility
         return $"background-color-{context}";
     }
 
-    public static int GetNumStars(int value, int maxValue = 200, int maxStars = 10)
+    public static int GetNumStars(double value, int maxValue = 200, int maxStars = 10)
     {
-        var temp = (int)Math.Round((double)value * maxStars / maxValue);
+        var temp = (int)Math.Round(value * maxStars / maxValue);
         return temp > maxStars ? maxStars : temp;
     }
 
@@ -109,5 +109,34 @@ public class BasicUtility
         using GZipStream gzip = new(ms, CompressionMode.Decompress);
         using StreamReader reader = new(gzip);
         return reader.ReadToEnd();
+    }
+
+    public static string ConvertDmToFeetAndInches(double dm)
+    {
+        // Convert dm to inches
+        double inches = dm * 3.937;
+
+        // Convert inches to feet and inches
+        int feet = (int)(inches / 12);
+        int remainingInches = (int)(inches % 12);
+
+        // Return the result in the format of feet and inches
+        return $"{feet}' {remainingInches}\"";
+    }
+
+    public static string ConvertHgToLbs(double hg)
+    {
+        const double kgPerHg = 0.1;   // 1 hectogram = 0.1 kilograms
+        const double lbsPerKg = 2.20462;   // 1 kilogram = 2.20462 pounds
+
+        double kg = hg * kgPerHg;
+        double lbs = Math.Round(kg * lbsPerKg, 1);
+
+        return $"{lbs} lbs";
+    }
+
+    public static string BaseExp(int baseExp)
+    {
+        return baseExp > 0 ? baseExp.ToString() : "N/A";
     }
 }

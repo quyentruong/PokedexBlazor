@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @implements IDisposable
 
-<MudThemeProvider IsDarkMode="@_isDarkMode" />
+<MudThemeProvider @ref="@_mudThemeProvider" IsDarkMode="@_isDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -26,18 +26,20 @@
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large">
-            @Body
+        <MudContainer MaxWidth="MaxWidth.Large" OnStateChange="@(() => StateHasChanged())">
+            @Body 
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
 @code {
+    
     private string modeIcon => _isDarkMode ? Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode;
     private string modeTooltipText => _isDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme";
     private bool _isDarkMode;
     private string _isDarkModeKey = "IsDarkMode";
     bool _drawerOpen = false;
+    private MudThemeProvider? _mudThemeProvider;
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,13 +58,14 @@
         if (localStorageSync.ContainKey(_isDarkModeKey))
         {
             _isDarkMode = localStorageSync.GetItem<bool>(_isDarkModeKey);
+            PokemonService.IsDarkMode = _isDarkMode;
         }
     }
-
 
     async void ToggleDarkMode()
     {
         _isDarkMode = !_isDarkMode;
+        PokemonService.IsDarkMode = _isDarkMode;
         await localStorage.SetItemAsync<bool>(_isDarkModeKey, _isDarkMode);
     }
 

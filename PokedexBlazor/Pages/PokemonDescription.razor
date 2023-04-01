@@ -106,6 +106,8 @@
     private PokemonDiet nextPokemon = null!;
     private PokemonDiet previousPokemon = null!;
 
+    private string _selectedPageKey = "SelectedPage";
+
     #region breakpoint variable
     [Inject] IBreakpointService? BreakpointListener { get; set; }
     private Breakpoint _lastCheckPoint;
@@ -131,6 +133,7 @@
                 NavigationManager.NavigateTo("");
             }
         }
+        await localStorage.SetItemAsStringAsync(_selectedPageKey, Math.Ceiling((decimal)pokemon?.Id!/12).ToString());
         var _ = PokemonService.PokemonList.FirstOrDefault(p => p.Id == pokemon?.Id + 1);
         if (_ != null)
         {
@@ -185,7 +188,7 @@
     {
         if (firstRender)
         {
-            var subscriptionResult = await BreakpointListener.Subscribe((breakpoint) =>
+            var subscriptionResult = await BreakpointListener!.Subscribe((breakpoint) =>
             {
                 Console.WriteLine(breakpoint.ToDescriptionString());
                 _lastCheckPoint = breakpoint;
@@ -204,6 +207,6 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    public async ValueTask DisposeAsync() => await BreakpointListener.Unsubscribe(_subscriptionId);
+    public async ValueTask DisposeAsync() => await BreakpointListener!.Unsubscribe(_subscriptionId);
     #endregion
 }

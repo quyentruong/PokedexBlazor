@@ -1,6 +1,8 @@
 ﻿@page "/pokemon/{Name?}"
 @page "/pokemon/{Id:int?}"
 @implements IDisposable
+@using MudBlazor.Services
+@implements IAsyncDisposable
 
 @if (pokemon != null)
 {
@@ -42,7 +44,7 @@
                 var ei = _emptyIcon[s];
                 var color = PokemonService.IsDarkMode ? _lightColor[s] : _darkColor[s];
                 color = $"color:{color}";
-                <MudStack Class="mb-4" Row="true">
+                <MudStack Class="mb-2" Row="true">
                     <MudText Style="max-width:10px;white-space: nowrap;margin-right:95px" Typo="Typo.body1">@BasicUtility.Capitalize(@stat.Name)</MudText>
                     <MudTooltip Text="@stat.Value.ToString()">
                         <MudRating Style="@color" FullIcon="@fi" EmptyIcon="@ei" ReadOnly="true" SelectedValue="@BasicUtility.GetNumStars(stat.Value)" MaxValue="10" />
@@ -74,9 +76,11 @@
         </MudItem>
     </MudGrid>
 
-
-    <div style="margin-bottom:100px"></div>
-    <MudAppBar Bottom="true" Elevation="1" Dense="true" Class="mt-5">
+    @if (new[]{ "xs"}.Contains(_lastCheckPoint.ToDescriptionString()))
+    {
+        <div style="margin-bottom:50px"></div>
+    }
+    <MudAppBar Bottom="true" Elevation="1" Dense="true">
         <MudIconButton Disabled="isPreviousPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-left" @onclick="()=>HandleClick(previousPokemon)" />
         <MudSpacer />
         <MudIconButton Style='color:azure' Icon="fa-solid fa-home" OnClick='()=>NavigationManager.NavigateTo("")' />
@@ -101,6 +105,13 @@
     private bool isNextPokemon;
     private PokemonDiet nextPokemon = null!;
     private PokemonDiet previousPokemon = null!;
+
+    #region breakpoint variable
+    [Inject] IBreakpointService? BreakpointListener { get; set; }
+    private Breakpoint _lastCheckPoint;
+    private Guid _subscriptionId;
+    private Breakpoint _start;
+    #endregion
 
     protected override async Task OnParametersSetAsync()
     {
@@ -168,4 +179,31 @@
     {
         PokemonService.OnChange -= StateHasChanged;
     }
+
+    #region breakpoint code
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var subscriptionResult = await BreakpointListener.Subscribe((breakpoint) =>
+            {
+                Console.WriteLine(breakpoint.ToDescriptionString());
+                _lastCheckPoint = breakpoint;
+                InvokeAsync(StateHasChanged);
+            }, new ResizeOptions
+                {
+                    ReportRate = 250,
+                    NotifyOnBreakpointOnly = true,
+                });
+
+            _start = subscriptionResult.Breakpoint;
+            _subscriptionId = subscriptionResult.SubscriptionId;
+            StateHasChanged();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async ValueTask DisposeAsync() => await BreakpointListener.Unsubscribe(_subscriptionId);
+    #endregion
 }

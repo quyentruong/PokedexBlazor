@@ -37,38 +37,29 @@
     private string modeTooltipText => _isDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme";
     private bool _isDarkMode;
     private string _isDarkModeKey = "IsDarkMode";
-    private string _hashValidation = "192d95tde29ob2103428d9byc1d31e22";
-    private string _hashValidationKey = "HashValidation";
-    private string _pokemonListKey = "PokemonList";
     bool _drawerOpen = false;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        PokemonTransferService.OnChange += StateHasChanged;
-        // Check validation key if not existed or missmatch, delete all local storage
-        bool validationMatch = localStorageSync.ContainKey(_hashValidationKey) &&
-                        _hashValidation.Equals(localStorageSync.GetItemAsString(_hashValidationKey));
-        if (!validationMatch)
-        {
-            localStorageSync.Clear();
-            localStorageSync.SetItemAsString(_hashValidationKey, _hashValidation);
-        }
         // Check cache of pokemon list if existed
         // 1. decompress string
         // 2. deserialize to list pokemon
-        if (localStorageSync.ContainKey(_pokemonListKey))
-        {
-            var _ = localStorageSync.GetItemAsString(_pokemonListKey);
-            var json = BasicUtility.DecompressStringDeflate(_);
-            PokemonTransferService.List = JsonConvert.DeserializeObject<List<PokemonLite>>(json)!;
-        }
+        var pokemonDeflate = await Http.GetStringAsync("data/pokemonDeflate.txt");
+        var pokemonJson = BasicUtility.DecompressStringDeflate(pokemonDeflate);
+        var pokemonTypeDamgeRelationDeflate = await Http.GetStringAsync("data/pokemonTypeDamgeRelationDeflate.txt");
+        var typeDamageJson = BasicUtility.DecompressStringDeflate(pokemonTypeDamgeRelationDeflate);
+        PokemonService.OnChange += StateHasChanged;
+
+        PokemonService.PokemonList = JsonConvert.DeserializeObject<List<PokemonDiet>>(pokemonJson)!;
+        PokemonService.TypeDamageDict = JsonConvert.DeserializeObject<Dictionary<string, TypeDamageRelation>>(typeDamageJson)!;
+
         if (localStorageSync.ContainKey(_isDarkModeKey))
         {
             _isDarkMode = localStorageSync.GetItem<bool>(_isDarkModeKey);
         }
     }
 
- 
+
     async void ToggleDarkMode()
     {
         _isDarkMode = !_isDarkMode;
@@ -82,6 +73,6 @@
 
     public void Dispose()
     {
-        PokemonTransferService.OnChange -= StateHasChanged;
+        PokemonService.OnChange -= StateHasChanged;
     }
 }

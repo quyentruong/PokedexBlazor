@@ -1,45 +1,49 @@
-﻿@page "/pokemon/{Name}"
+﻿@page "/pokemon/{Name?}"
+@page "/pokemon/{Id:int?}"
 
 <MudButton Color="Color.Info" StartIcon="@Icons.Material.Filled.ArrowBackIos" OnClick='()=>NavigationManager.NavigateTo("")'>Back</MudButton>
 @if (pokemon != null)
 {
-    <PageTitle>@BasicUtility.Capitalize(pokemon.N) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
+    <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
     <MudStack Justify="Justify.Center" Row="true">
-        <MudText Typo="Typo.h3" GutterBottom="true" Color="Color.Primary">@BasicUtility.Capitalize(pokemon.N)</MudText>
+        <MudText Typo="Typo.h3" GutterBottom="true" Color="Color.Primary">@BasicUtility.Capitalize(pokemon.Name)</MudText>
         <MudText Typo="Typo.h3" GutterBottom="true" Color="Color.Secondary">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
     </MudStack>
     <MudGrid>
         <MudItem xs="12" sm="6" md="4">
-            <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.N" />
+            <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" />
         </MudItem>
         <MudItem xs="12" sm="6" md="4">
             <MudText Typo="Typo.h6" Color="Color.Info">Stats</MudText>
-            @for (var s = 0; s < pokemon.Sts.Count; s++)
+            @for (var s = 0; s < pokemon.Stats.Count; s++)
             {
-                var stat = pokemon.Sts[s];
+                var stat = pokemon.Stats[s];
                 <MudStack Row="true">
-                    <MudText Style="max-width:10px;white-space: nowrap;margin-right:93px" Typo="Typo.body1">@BasicUtility.Capitalize(@stat.N)</MudText>
-                    <MudTooltip Text="@stat.V.ToString()">
-                        <MudRating ReadOnly="true" SelectedValue="@BasicUtility.GetNumStars(stat.V)" MaxValue="10" />
+                    <MudText Style="max-width:10px;white-space: nowrap;margin-right:93px" Typo="Typo.body1">@BasicUtility.Capitalize(@stat.Name)</MudText>
+                    <MudTooltip Text="@stat.Value.ToString()">
+                        <MudRating ReadOnly="true" SelectedValue="@BasicUtility.GetNumStars(stat.Value)" MaxValue="10" />
                     </MudTooltip>
                 </MudStack>
             }
             <MudText Typo="Typo.h6" Class="mt-2">Type</MudText>
-            @for (var j = 0; j < pokemon.Ts.Count; j++)
+            @for (var j = 0; j < pokemon.Types.Count; j++)
             {
-                var type = pokemon.Ts[j];
+                var type = pokemon.Types[j];
+                pokemon.Weakness.UnionWith(PokemonService.TypeDamageDict[type].Weakness);
+
+                pokemon.Strength.UnionWith(PokemonService.TypeDamageDict[type].Strength);
+
                 <MudChip Class="@BasicUtility.GetChipClass(type)" Style="text-transform:capitalize">@type</MudChip>
             }
             <MudText Typo="Typo.h6" Color="Color.Tertiary" Class="mt-2">Strong Against</MudText>
-            @for (var j = 0; j < pokemon.Sgs.Count; j++)
+            
+            @foreach (var strong in pokemon.Strength)
             {
-                var strong = pokemon.Sgs[j];
                 <MudChip Class="@BasicUtility.GetChipClass(strong)" Style="text-transform:capitalize">@strong</MudChip>
             }
             <MudText Typo="Typo.h6" Color="Color.Error" Class="mt-2">Vulnerable To</MudText>
-            @for (var j = 0; j < pokemon.Wns.Count; j++)
+            @foreach (var weakness in pokemon.Weakness)
             {
-                var weakness = pokemon.Wns[j];
                 <MudChip Class="@BasicUtility.GetChipClass(weakness)" Style="text-transform:capitalize">@weakness</MudChip>
             }
 
@@ -49,25 +53,23 @@
 @code {
     [Parameter]
     public string Name { get; set; } = string.Empty;
-    public PokemonLite? pokemon;
-    protected override void OnParametersSet()
+    [Parameter]
+    public int Id { get; set; }
+    public PokemonDiet? pokemon;
+    protected override async Task OnParametersSetAsync()
     {
-        pokemon = PokemonTransferService.Data;
-        if (pokemon == null || !pokemon.N.Equals(Name))
+        while (PokemonService.PokemonList.Count == 0)
         {
-            pokemon = PokemonTransferService.List.FirstOrDefault(p => p.N.Equals(Name));
+            await Task.Delay(500);
+        }
+        pokemon = PokemonService.Data;
+        if (pokemon == null || !pokemon.Name.Equals(Name) || pokemon.Id != Id)
+        {
+            pokemon = PokemonService.PokemonList.FirstOrDefault(p => p.Name.Equals(Name) || p.Id == Id);
             if (pokemon == null)
             {
                 NavigationManager.NavigateTo("");
             }
         }
-        //if (await localStorage.ContainKeyAsync(_pokemonListKey))
-        //{
-            //var _ = await localStorage.GetItemAsync<List<PokemonLite>>(_pokemonListKey);
-            //var compress = await localStorage.GetItemAsStringAsync(_pokemonListKey);
-            //var json = BasicUtility.DecompressStringDeflate(compress);
-            //var _ = JsonConvert.DeserializeObject<List<PokemonLite>>(json);
-            
-        //}
     }
 }

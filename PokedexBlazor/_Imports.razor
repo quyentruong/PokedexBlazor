@@ -10,7 +10,6 @@
 @using PokedexBlazor
 @using PokedexBlazor.Services;
 @using PokedexBlazor.Shared
-@using PokeApiNet
 @using PokedexBlazor.Models
 @using PokedexBlazor.Utils
 @using Newtonsoft.Json
@@ -18,4 +17,5 @@
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject Blazored.LocalStorage.ISyncLocalStorageService localStorageSync
 @inject NavigationManager NavigationManager
-@inject PokemonTransferService PokemonTransferService
+@inject PokemonService PokemonService
+@inject HttpClient Http

@@ -110,37 +110,4 @@ public class BasicUtility
         using StreamReader reader = new(gzip);
         return reader.ReadToEnd();
     }
-
-    public static long CalculateSize(List<PokemonLite> list)
-    {
-        long size = 0;
-
-        // Iterate over each item in the list
-        foreach (var item in list)
-        {
-            if (item.Id != 0)
-            {
-                // Calculate size of int and string properties
-                size += sizeof(int);
-                size += sizeof(char) * item.N.Length;
-
-                foreach (var w in item.Wns)
-                    size += sizeof(char) * w.Length;
-                foreach (var t in item.Ts)
-                    size += sizeof(char) * t.Length;
-                foreach (var s in item.Sgs)
-                    size += sizeof(char) * s.Length;
-
-                // Calculate size of PokemonLiteStat list
-                size += sizeof(int) * item.Sts.Capacity;
-                foreach (var stat in item.Sts)
-                {
-                    size += sizeof(char) * stat.N.Length;
-                    size += sizeof(int);
-                }
-            }
-        }
-
-        return size;
-    }
 }

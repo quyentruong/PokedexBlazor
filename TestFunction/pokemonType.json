@@ -1,0 +1,2076 @@
+{
+  "data": {
+    "pokemon_v2_typename": [
+      {
+        "name": "Bug",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Dark",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 0,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Dragon",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Electric",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Fairy",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 0,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Fighting",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Fire",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Flying",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 0,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Ghost",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 0,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 0,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Grass",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Ground",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 0,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Ice",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Normal",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 0,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Poison",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Psychic",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Rock",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Steel",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 0,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Water",
+        "pokemon_v2_type": {
+          "pokemonV2TypeefficaciesByTargetTypeId": [
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "normal"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fighting"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "flying"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "poison"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ground"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "rock"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "bug"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "ghost"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "steel"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "fire"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "water"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "grass"
+              }
+            },
+            {
+              "damage_factor": 200,
+              "pokemon_v2_type": {
+                "name": "electric"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "psychic"
+              }
+            },
+            {
+              "damage_factor": 50,
+              "pokemon_v2_type": {
+                "name": "ice"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dragon"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "dark"
+              }
+            },
+            {
+              "damage_factor": 100,
+              "pokemon_v2_type": {
+                "name": "fairy"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

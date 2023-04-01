@@ -1,14 +1,13 @@
 ﻿@page "/"
-@implements IDisposable
 
 <PageTitle>Pokedex</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Pokedex!</MudText>
 
 <div class="d-flex flex-column align-center">
-    <MudPagination Disabled="@IsPaginationDisabled" @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="85" />
+    <MudPagination Disabled="@IsPaginationDisabled" @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="84" />
     <MudSelect T="int" Value="@_selectedPage" ValueChanged="PageChanged" Label="Jump Page" AnchorOrigin="Origin.BottomCenter">
-        @for (var i = 1; i <= 85; i++)
+        @for (var i = 1; i <= 84; i++)
         {
             <MudSelectItem T="int" Value="@i" />
         }
@@ -16,7 +15,7 @@
 </div>
 
 
-@if (!_isLoading && PokemonTransferService.List.Count > _endIndex && PokemonTransferService.List[_endIndex].Id != 0)
+@if (PokemonService.PokemonList != null && PokemonService.PokemonList.Count > _endIndex && PokemonService.PokemonList[_endIndex].Id != 0)
 {
     int startIndex = (_selectedPage - 1) * 12;
     int endIndex = _selectedPage * 12;
@@ -24,16 +23,16 @@
     <MudGrid key="@renderKey">
         @for (var i = startIndex; i < endIndex; i++)
         {
-            var pokemon = PokemonTransferService.List[i];
+            var pokemon = PokemonService.PokemonList[i];
             if (pokemon.Id != 0)
             {
                 <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
-                    <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.N" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
+                    <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
                     <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
-                    <MudText Typo="Typo.h6">@BasicUtility.Capitalize(pokemon.N)</MudText>
-                    @for (var j = 0; j < pokemon.Ts.Count; j++)
+                    <MudText Typo="Typo.h6">@BasicUtility.Capitalize(pokemon.Name)</MudText>
+                    @for (var j = 0; j < pokemon.Types.Count; j++)
                     {
-                        var type = pokemon.Ts[j];
+                        var type = pokemon.Types[j];
                         <MudChip Class="@BasicUtility.GetChipClass(type)" Style="text-transform:capitalize">@type</MudChip>
                     }
                 </MudItem>
@@ -58,80 +57,39 @@ else
     private bool IsPaginationDisabled = false;
     private int _endIndex = 0;
     private int _selectedPage = 1;
-    private bool _isLoading = false;
-    private string _pokemonListKey = "PokemonList";
+    //private string _pokemonListKey = "PokemonList";
     private string _selectedPageKey = "SelectedPage";
-    PokeApiClient pokeClient = new PokeApiClient();
     private string renderKey = Guid.NewGuid().ToString();
 
     protected override async Task OnInitializedAsync()
     {
-        if (PokemonTransferService.List.Count == 0)
+
+        while (PokemonService.PokemonList.Count == 0)
         {
-            for (var i = 0; i < 1000; i++)
-            {
-                PokemonTransferService.Add(new PokemonLite());
-            }
-            await GetPokemonList(1);
+            await Task.Delay(500);
         }
 
         if (await localStorage.ContainKeyAsync(_selectedPageKey))
         {
             _selectedPage = int.Parse(await localStorage.GetItemAsStringAsync(_selectedPageKey));
             _mudPagination?.NavigateTo(_selectedPage - 1);
+            GetPokemonList(_selectedPage);
+        } else
+        {
+            GetPokemonList(1);
         }
 
     }
 
-    private async Task GetPokemonList(int page)
+    private void GetPokemonList(int page)
     {
-        // one page has 12 pokemons
-        _isLoading = true;
-        //renderKey = Guid.NewGuid().ToString();
         _selectedPage = page;
-        int startIndex = (page - 1) * 12 + 1;
         int endIndex = page * 12;
         if (endIndex > 1010) endIndex = 1010;
         _endIndex = endIndex - 1;
-        StateHasChanged();
-
-        for (var i = PokemonTransferService.List.Count; i < endIndex; i++)
-        {
-            PokemonTransferService.Add(new PokemonLite());
-        }
-
-        // key to check if call api needed
-        var willFetch = false;
-        // pokemon api id start from 1
-        for (var i = startIndex - 1; i < endIndex; i++)
-        {
-            if (PokemonTransferService.List[i].Id == 0)
-            {
-                willFetch = true;
-                // get detail of a pokemon
-                var getPokemon = await pokeClient.GetResourceAsync<Pokemon>(i + 1);
-                // get a list of pokemontype that contains damage relation
-                var _ = await pokeClient.GetResourceAsync(getPokemon.Types.Select(ty => ty.Type));
-                PokemonTransferService.List[i].Initialize(getPokemon, _);
-            }
-            // fetch not needed, break out of loop
-            if (!willFetch) break;
-        }
-
-        if (willFetch)
-        {
-            // 1. serilize pokemon list
-            // 2. compress string
-            var json = JsonConvert.SerializeObject(PokemonTransferService.List);
-            var compress = BasicUtility.CompressStringDeflate(json);
-            await localStorage.SetItemAsStringAsync(_pokemonListKey, compress);
-            //await localStorage.SetItemAsync<List<PokemonLite>>(_pokemonListKey, pokemonList);
-        }
-        _isLoading = false;
         // update the key to force a re-render
         renderKey = Guid.NewGuid().ToString();
         StateHasChanged();
-
     }
 
     private async void PageChanged(int i)
@@ -141,18 +99,14 @@ else
         //_mudPagination.Selected = i;
 #pragma warning restore CS8602, BL0005
         await localStorage.SetItemAsStringAsync(_selectedPageKey, i.ToString());
-        await GetPokemonList(i).ConfigureAwait(false);
+        GetPokemonList(i);
 
     }
 
-    public void HandleClick(PokemonLite p)
+    public void HandleClick(PokemonDiet p)
     {
-        PokemonTransferService.Data = p;
-        NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{p.N}");
+        PokemonService.Data = p;
+        NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{p.Name}");
     }
 
-    public void Dispose()
-    {
-        pokeClient.Dispose();
-    }
 }

@@ -6,7 +6,7 @@
 
 @if (pokemon != null)
 {
-    <MudSwipeArea OnSwipe="((d) => SwipeAction(d))" Style="width: 100%; height: 300px" PreventDefault="true">
+    <MudSwipeArea OnSwipe="((d) => SwipeAction(d))" Style="width: 100%; height: 300px">
         <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
         <MudStack Justify="Justify.Center" Row="true">
             <MudText Typo="@_typoTitle" GutterBottom="true" Color="Color.Primary" Style="white-space: nowrap">@BasicUtility.Capitalize(pokemon.Name)</MudText>

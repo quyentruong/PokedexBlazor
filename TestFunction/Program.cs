@@ -28,6 +28,6 @@ using TestFunction.FlattenJson;
 //List<Move> allMoves = await pokeClient.GetResourceAsync(pikachu.Moves.Select(move => move.Move));
 //FlattenPokemon.Run();
 //await FlattenPokemonDamageRelation.Run();
-Console.WriteLine();
+Console.WriteLine("test");
 //FlattenPokemon.Run();
 //FlattenPokemonType.Run();

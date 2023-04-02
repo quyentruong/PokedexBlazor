@@ -6,7 +6,7 @@
 
 @if (pokemon != null)
 {
-    <MudSwipeArea OnSwipe="((d) => SwipeAction(d))" Style="width: 100%; height: 300px">
+    <MudSwipeArea OnSwipe="((d) => SwipeAction(d))" Style="width: 100%; height: 300px" PreventDefault="true">
         <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
         <MudStack Justify="Justify.Center" Row="true">
             <MudText Typo="@_typoTitle" GutterBottom="true" Color="Color.Primary" Style="white-space: nowrap">@BasicUtility.Capitalize(pokemon.Name)</MudText>
@@ -77,11 +77,12 @@
             </MudItem>
         </MudGrid>
 
-        @if (_lastCheckPoint.ToDescriptionString().Equals("xs",StringComparison.OrdinalIgnoreCase))
-        {
-            Console.WriteLine(_lastCheckPoint.ToDescriptionString());
+        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
             <div style="height:60px"></div>
-        }
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.Sm" Invert="true">
+            <div style="height:700px"></div>
+        </MudHidden>
     </MudSwipeArea>
     <MudAppBar Bottom="true" Elevation="1" Dense="true">
         <MudIconButton Disabled="isPreviousPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-left" OnClick="PreviousPokemonAction" />
@@ -201,7 +202,6 @@ else
     {
         if (swipeDirection.ToDescriptionString().Equals("LeftToRight", StringComparison.OrdinalIgnoreCase)) NextPokemonAction();
         if (swipeDirection.ToDescriptionString().Equals("RightToLeft", StringComparison.OrdinalIgnoreCase)) PreviousPokemonAction();
-        Console.WriteLine(swipeDirection.ToDescriptionString());
     }
 
     private void GoBackAction()

@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@implements IDisposable
 
 <MudThemeProvider @ref="@_mudThemeProvider" IsDarkMode="@_isDarkMode" />
 <MudDialogProvider />
@@ -26,14 +25,14 @@
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" OnStateChange="@(() => StateHasChanged())">
+        <MudContainer MaxWidth="MaxWidth.Large">
             @Body 
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
 @code {
-    
+
     private string modeIcon => _isDarkMode ? Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode;
     private string modeTooltipText => _isDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme";
     private bool _isDarkMode;
@@ -50,7 +49,6 @@
         var pokemonJson = BasicUtility.DecompressStringDeflate(pokemonDeflate);
         var pokemonTypeDamgeRelationDeflate = await Http.GetStringAsync("data/pokemonTypeDamgeRelationDeflate.txt");
         var typeDamageJson = BasicUtility.DecompressStringDeflate(pokemonTypeDamgeRelationDeflate);
-        PokemonService.OnChange += StateHasChanged;
 
         PokemonService.PokemonList = JsonConvert.DeserializeObject<List<PokemonDiet>>(pokemonJson)!;
         PokemonService.TypeDamageDict = JsonConvert.DeserializeObject<Dictionary<string, TypeDamageRelation>>(typeDamageJson)!;
@@ -74,8 +72,4 @@
         _drawerOpen = !_drawerOpen;
     }
 
-    public void Dispose()
-    {
-        PokemonService.OnChange -= StateHasChanged;
-    }
 }

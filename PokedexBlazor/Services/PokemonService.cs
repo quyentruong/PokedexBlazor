@@ -1,9 +1,22 @@
-﻿using PokedexBlazor.Models;
+﻿using MudBlazor;
+using PokedexBlazor.Models;
 
 namespace PokedexBlazor.Services;
 
 public class PokemonService
 {
+    private bool _isDarkMode = false;
+
+    public bool IsDarkMode
+    {
+        get => _isDarkMode;
+        set
+        {
+            _isDarkMode = value;
+            NotifyStateChanged();
+        }
+    }
+
     private PokemonDiet _data = null!;
 
     public PokemonDiet Data
@@ -15,11 +28,6 @@ public class PokemonService
             NotifyStateChanged();
         }
     }
-
-    private bool _isDarkMode = false;
-
-    public bool IsDarkMode
-    { get => _isDarkMode; set { _isDarkMode = value; NotifyStateChanged(); } }
 
     private Dictionary<string, TypeDamageRelation> _typeDamageDict = new();
 

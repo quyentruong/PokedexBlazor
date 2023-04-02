@@ -1,5 +1,4 @@
 ﻿@page "/"
-
 <PageTitle>Pokedex</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Pokedex!</MudText>
@@ -20,25 +19,27 @@
     int startIndex = (_selectedPage - 1) * 12;
     int endIndex = _selectedPage * 12;
     if (endIndex > 1010) endIndex = 1010;
-    <MudGrid key="@renderKey">
-        @for (var i = startIndex; i < endIndex; i++)
-        {
-            var pokemon = PokemonService.PokemonList[i];
-            if (pokemon.Id != 0)
+    <MudSwipeArea OnSwipe="((d) => SwipeAction(d))" Style="width: 100%; height: 100%">
+        <MudGrid key="@renderKey">
+            @for (var i = startIndex; i < endIndex; i++)
             {
-                <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
-                    <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
-                    <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
-                    <MudText Typo="Typo.h6">@BasicUtility.Capitalize(pokemon.Name)</MudText>
-                    @for (var j = 0; j < pokemon.Types.Count; j++)
-                    {
-                        var type = pokemon.Types[j];
-                        <MudChip Class="@BasicUtility.GetChipClass(type)" Style="text-transform:capitalize">@type</MudChip>
-                    }
-                </MudItem>
+                var pokemon = PokemonService.PokemonList[i];
+                if (pokemon.Id != 0)
+                {
+                    <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
+                        <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
+                        <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
+                        <MudText Typo="Typo.h6">@BasicUtility.Capitalize(pokemon.Name)</MudText>
+                        @for (var j = 0; j < pokemon.Types.Count; j++)
+                        {
+                            var type = pokemon.Types[j];
+                            <MudChip Class="@BasicUtility.GetChipClass(type)" Style="text-transform:capitalize">@type</MudChip>
+                        }
+                    </MudItem>
+                }
             }
-        }
-    </MudGrid>
+        </MudGrid>
+    </MudSwipeArea>
 }
 else
 {
@@ -67,7 +68,6 @@ else
         {
             await Task.Delay(500);
         }
-
         if (await localStorage.ContainKeyAsync(_selectedPageKey))
         {
             _selectedPage = int.Parse(await localStorage.GetItemAsStringAsync(_selectedPageKey));
@@ -78,8 +78,8 @@ else
         {
             GetPokemonList(1);
         }
-
     }
+
 
     private async void GetPokemonList(int page)
     {
@@ -114,4 +114,9 @@ else
         NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{p.Name}");
     }
 
+    private void SwipeAction(SwipeDirection swipeDirection)
+    {
+        if (swipeDirection.ToDescriptionString().Equals("LeftToRight", StringComparison.OrdinalIgnoreCase) && _selectedPage < 84) PageChanged(_selectedPage + 1);
+        if (swipeDirection.ToDescriptionString().Equals("RightToLeft", StringComparison.OrdinalIgnoreCase) && _selectedPage > 1) PageChanged(_selectedPage - 1);
+    }
 }

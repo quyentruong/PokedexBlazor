@@ -76,17 +76,26 @@
         </MudItem>
     </MudGrid>
 
-    @if (new[]{ "xs"}.Contains(_lastCheckPoint.ToDescriptionString()))
+    @if (new[] { "xs" }.Contains(_lastCheckPoint.ToDescriptionString()))
     {
         <div style="margin-bottom:50px"></div>
     }
     <MudAppBar Bottom="true" Elevation="1" Dense="true">
-        <MudIconButton Disabled="isPreviousPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-left" @onclick="()=>HandleClick(previousPokemon)" />
+        <MudIconButton Disabled="isPreviousPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-left" OnClick="PreviousPokemonAction" />
         <MudSpacer />
-        <MudIconButton Style='color:azure' Icon="fa-solid fa-home" OnClick='()=>NavigationManager.NavigateTo("")' />
+        <MudIconButton Style='color:azure' Icon="fa-solid fa-home" OnClick='GoBackAction' />
         <MudSpacer />
-        <MudIconButton Disabled="isNextPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-right" @onclick="()=>HandleClick(nextPokemon)" />
+        <MudIconButton Disabled="isNextPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-right" OnClick="NextPokemonAction" />
     </MudAppBar>
+}
+else
+{
+    <div class="d-flex align-center justify-center" style="margin-top:85px">
+        <span class="ring">
+            Loading
+            <span class="ringinside"></span>
+        </span>
+    </div>
 }
 @code {
     [Parameter]
@@ -107,6 +116,7 @@
     private PokemonDiet previousPokemon = null!;
 
     private string _selectedPageKey = "SelectedPage";
+    private HotKeysContext? HotKeysContext;
 
     #region breakpoint variable
     [Inject] IBreakpointService? BreakpointListener { get; set; }
@@ -133,7 +143,7 @@
                 NavigationManager.NavigateTo("");
             }
         }
-        await localStorage.SetItemAsStringAsync(_selectedPageKey, Math.Ceiling((decimal)pokemon?.Id!/12).ToString());
+        await localStorage.SetItemAsStringAsync(_selectedPageKey, Math.Ceiling((decimal)pokemon?.Id! / 12).ToString());
         var _ = PokemonService.PokemonList.FirstOrDefault(p => p.Id == pokemon?.Id + 1);
         if (_ != null)
         {
@@ -170,17 +180,37 @@
                     Value = Math.Round(pokemon.Stats.Average(x => x.Value))
                 });
         }
+
+        HotKeysContext = HotKeys.CreateContext().Add(ModCode.Ctrl, Code.ArrowRight, NextPokemonAction, "Move to next pokemon");
+        HotKeysContext = HotKeys.CreateContext().Add(ModCode.Ctrl, Code.ArrowLeft, PreviousPokemonAction, "Move to previous pokemon");
+        HotKeysContext = HotKeys.CreateContext().Add(ModCode.Ctrl | ModCode.Shift, Code.ArrowUp, GoBackAction, "Go back to list");
     }
 
-    public void HandleClick(PokemonDiet p)
+    private void HandleClick(PokemonDiet p)
     {
         PokemonService.Data = p;
         NavigationManager.NavigateTo($"pokemon/{p.Name}");
     }
 
+    private void GoBackAction()
+    {
+        NavigationManager.NavigateTo("");
+    }
+
+    private void PreviousPokemonAction()
+    {
+        HandleClick(previousPokemon);
+    }
+
+    private void NextPokemonAction()
+    {
+        HandleClick(nextPokemon);
+    }
+
     public void Dispose()
     {
         PokemonService.OnChange -= StateHasChanged;
+        HotKeysContext?.Dispose();
     }
 
     #region breakpoint code
@@ -190,7 +220,6 @@
         {
             var subscriptionResult = await BreakpointListener!.Subscribe((breakpoint) =>
             {
-                Console.WriteLine(breakpoint.ToDescriptionString());
                 _lastCheckPoint = breakpoint;
                 InvokeAsync(StateHasChanged);
             }, new ResizeOptions

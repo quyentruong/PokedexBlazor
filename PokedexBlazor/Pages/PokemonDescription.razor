@@ -6,7 +6,7 @@
 @if (pokemon != null)
 {
     <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
-    <Animation Effect="_effect" Speed="Speed.Fast" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
+    <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
         <MudStack Justify="Justify.Center" Row="true">
             <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
                 <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Primary" Style="white-space: nowrap">@BasicUtility.Capitalize(pokemon.Name)</MudText>

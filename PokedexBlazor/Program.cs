@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using PokedexBlazor;
 using PokedexBlazor.Services;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -14,5 +15,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices();
 builder.Services.AddScoped<PokemonService>();
+builder.Services.AddPWAUpdater();
 
 await builder.Build().RunAsync();

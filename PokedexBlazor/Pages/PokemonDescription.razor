@@ -1,24 +1,24 @@
-﻿
-@page "/pokemon/{Name?}"
+﻿@page "/pokemon/{Name?}"
 @page "/pokemon/{Id:int?}"
 @implements IDisposable
 
 @if (pokemon != null)
 {
     <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
-    <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
-        <MudStack Justify="Justify.Center" Row="true">
-            <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
-                <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Primary" Style="white-space: nowrap">@BasicUtility.Capitalize(pokemon.Name)</MudText>
-                <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Secondary">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
-            </MudHidden>
-            <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-                <MudText Typo="Typo.h2" GutterBottom="true" Color="Color.Primary" Style="white-space: nowrap">@BasicUtility.Capitalize(pokemon.Name)</MudText>
-                <MudText Typo="Typo.h2" GutterBottom="true" Color="Color.Secondary">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
-            </MudHidden>
-        </MudStack>
+    <MudSwipeArea OnSwipe="((d) => SwipeAction(d))" Style="width: 100%; height: 100%">
+        <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
+            <MudStack Justify="Justify.Center" Row="true">
+                <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                    <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Primary" Style="white-space: nowrap">@BasicUtility.Capitalize(pokemon.Name)</MudText>
+                    <MudText Typo="Typo.h4" GutterBottom="true" Color="Color.Secondary">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
+                </MudHidden>
+                <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+                    <MudText Typo="Typo.h2" GutterBottom="true" Color="Color.Primary" Style="white-space: nowrap">@BasicUtility.Capitalize(pokemon.Name)</MudText>
+                    <MudText Typo="Typo.h2" GutterBottom="true" Color="Color.Secondary">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
+                </MudHidden>
+            </MudStack>
 
-        <MudSwipeArea OnSwipe="((d) => SwipeAction(d))" Style="width: 100%; height: 100%">
+
             <MudGrid Justify="Justify.Center">
                 <MudItem xs="12" sm="9" md="4">
                     <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" />
@@ -87,8 +87,9 @@
             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
                 <div style="height:50px"></div>
             </MudHidden>
-        </MudSwipeArea>
-    </Animation>
+        </Animation>
+    </MudSwipeArea>
+
     <MudAppBar Bottom="true" Elevation="1" Dense="true">
         <MudIconButton Disabled="isPreviousPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-left" OnClick="PreviousPokemonAction" />
         <MudSpacer />

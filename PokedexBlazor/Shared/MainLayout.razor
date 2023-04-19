@@ -4,10 +4,10 @@
 <MudThemeProvider @ref="@_mudThemeProvider" IsDarkMode="@_isDarkMode" />
 <MudDialogProvider />
 <MudSnackbarProvider />
-<PWAUpdater />
 
 <MudLayout>
     <MudAppBar Elevation="0" Dense="true">
+        <PWAUpdater />
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
         <MudTooltip Text="@modeTooltipText">

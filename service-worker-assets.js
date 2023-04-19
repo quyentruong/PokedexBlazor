@@ -65,7 +65,7 @@
       "url": "_framework\/icudt.dat.br"
     },
     {
-      "hash": "sha256-sE72P+2VRR+EYDO1tsQh4BD4ndQAfb17keiII\/nx0Yk=",
+      "hash": "sha256-NZVEippVTwLylF0Y5m093f3Xo164IP1Rrlp8lkmxVtc=",
       "url": "_framework\/blazor.boot.json.br"
     },
     {
@@ -153,7 +153,7 @@
       "url": "_framework\/Newtonsoft.Json.dll.br"
     },
     {
-      "hash": "sha256-E9lMiE+Ohmtpyiyms5e4WnehnuoDVwwM6joIW32d91c=",
+      "hash": "sha256-5ty8JX5SqXWt7ctNodqnvc6ZS2ChD3vVZ0IXNiXFin4=",
       "url": "_framework\/PokedexBlazor.dll.br"
     },
     {
@@ -385,5 +385,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "FLssewdy"
+  "version": "R64WAZw9"
 };

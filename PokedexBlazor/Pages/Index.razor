@@ -13,14 +13,13 @@
     </MudSelect>
 </div>
 
-
 @if (PokemonService.PokemonList != null && PokemonService.PokemonList.Count > _endIndex && PokemonService.PokemonList[_endIndex].Id != 0)
 {
     int startIndex = (_selectedPage - 1) * 12;
     int endIndex = _selectedPage * 12;
     if (endIndex > 1010) endIndex = 1010;
     <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
-        <MudSwipeArea OnSwipe="((d) => SwipeAction(d))" Style="width: 100%; height: 100%">
+        <MudSwipeArea OnSwipeEnd="((d) => SwipeAction(d))" Style="width: 100%; height: 100%">
             <MudGrid>
                 @for (var i = startIndex; i < endIndex; i++)
                 {
@@ -53,7 +52,6 @@ else
     </div>
 }
 
-
 @code {
     private AnimationEffect? _effect;
     private bool _runAnimation;
@@ -81,7 +79,6 @@ else
         }
     }
 
-
     private void GetPokemonList(int page)
     {
 
@@ -94,9 +91,7 @@ else
 
         // update the key to force a re-render
         //renderKey = Guid.NewGuid().ToString();
-        
-      
-        
+
     }
 
     private async void PageChanged(int i)
@@ -124,9 +119,9 @@ else
         NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{p.Name}");
     }
 
-    private void SwipeAction(SwipeDirection swipeDirection)
+    private void SwipeAction(SwipeEventArgs swipeEventArgs)
     {
-        if (swipeDirection.ToDescriptionString().Equals("RightToLeft", StringComparison.OrdinalIgnoreCase) && _selectedPage < 84) PageChanged(_selectedPage + 1);
-        if (swipeDirection.ToDescriptionString().Equals("LeftToRight", StringComparison.OrdinalIgnoreCase) && _selectedPage > 1) PageChanged(_selectedPage - 1);
+        if (swipeEventArgs.SwipeDirection.ToDescriptionString().Equals("RightToLeft", StringComparison.OrdinalIgnoreCase) && _selectedPage < 84) PageChanged(_selectedPage + 1);
+        if (swipeEventArgs.SwipeDirection.ToDescriptionString().Equals("LeftToRight", StringComparison.OrdinalIgnoreCase) && _selectedPage > 1) PageChanged(_selectedPage - 1);
     }
 }

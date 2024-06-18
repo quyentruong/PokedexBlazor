@@ -5,38 +5,40 @@
 
 <div class="d-flex flex-column align-center">
     <MudPagination @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="84" />
-    <MudSelect T="int" Value="@_selectedPage" ValueChanged="PageChanged" Label="Jump Page" AnchorOrigin="Origin.BottomCenter">
-        @for (var i = 1; i <= 84; i++)
-        {
-            <MudSelectItem T="int" Value="@i" />
-        }
-    </MudSelect>
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12" sm="3">
+            <MudSelect T="int" Value="@_selectedPage" ValueChanged="PageChanged" Label="Jump Page" AnchorOrigin="Origin.BottomCenter">
+                @for (var i = 1; i <= 84; i++)
+                {
+                    <MudSelectItem T="int" Value="@i" />
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" sm="3">
+            <MudAutocomplete T="string" Label="Pokemon" @bind-Value="foundPokemon" SearchFunc="@SearchPokemon" MaxItems="20" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" OnAdornmentClick="()=>HandleClick(foundPokemon)" />
+        </MudItem>
+    </MudGrid>
 </div>
 
-@if (PokemonService.PokemonList != null && PokemonService.PokemonList.Count > _endIndex && PokemonService.PokemonList[_endIndex].Id != 0)
+@if (PokemonService.PokemonList.Count > _endIndex && PokemonService.PokemonList[_endIndex].Id != 0)
 {
     int startIndex = (_selectedPage - 1) * 12;
-    int endIndex = _selectedPage * 12;
-    if (endIndex > 1010) endIndex = 1010;
+    int endIndex = Math.Min(_selectedPage * 12, 1010);
     <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
-        <MudSwipeArea OnSwipeEnd="((d) => SwipeAction(d))" Style="width: 100%; height: 100%">
+        <MudSwipeArea OnSwipeEnd="SwipeAction" Style="width: 100%; height: 100%">
             <MudGrid>
-                @for (var i = startIndex; i < endIndex; i++)
+                @foreach (var pokemon in PokemonService.PokemonList.Skip(startIndex).Take(endIndex - startIndex))
                 {
-                    var pokemon = PokemonService.PokemonList[i];
-                    if (pokemon.Id != 0)
-                    {
-                        <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
-                            <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
-                            <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
-                            <MudText Typo="Typo.h6">@BasicUtility.Capitalize(pokemon.Name)</MudText>
-                            @for (var j = 0; j < pokemon.Types.Count; j++)
-                            {
-                                var type = pokemon.Types[j];
-                                <MudChip Class="@BasicUtility.GetChipClass(type)" Style="text-transform:capitalize">@type</MudChip>
-                            }
-                        </MudItem>
-                    }
+
+                    <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
+                        <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
+                        <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
+                        <MudText Typo="Typo.h6">@BasicUtility.Capitalize(pokemon.Name)</MudText>
+                        @foreach (var type in pokemon.Types)
+                        {
+                            <MudChip Class="@BasicUtility.GetChipClass(type)" Style="text-transform:capitalize">@type</MudChip>
+                        }
+                    </MudItem>
                 }
             </MudGrid>
         </MudSwipeArea>
@@ -58,8 +60,22 @@ else
     private MudPagination? _mudPagination;
     private int _endIndex = 0;
     private int _selectedPage = 1;
+    private string foundPokemon = String.Empty;
     //private string _pokemonListKey = "PokemonList";
     private string _selectedPageKey = "SelectedPage";
+
+    private async Task<IEnumerable<string>> SearchPokemon(string value)
+    {
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(5);
+
+        var temp = PokemonService.PokemonList.Select(pokemon => $"{pokemon.Id} - {@BasicUtility.Capitalize(pokemon.Name)}");
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return temp;
+        return temp.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,7 +85,7 @@ else
         }
         if (await localStorage.ContainKeyAsync(_selectedPageKey))
         {
-            _selectedPage = int.Parse(await localStorage.GetItemAsStringAsync(_selectedPageKey));
+            _selectedPage = int.TryParse(await localStorage.GetItemAsStringAsync(_selectedPageKey), out var page) ? page : 1;
             _mudPagination?.NavigateTo(_selectedPage - 1);
             GetPokemonList(_selectedPage);
         }
@@ -117,6 +133,12 @@ else
     {
         PokemonService.Data = p;
         NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{p.Name}");
+    }
+
+    public void HandleClick(string p)
+    {
+        var name = p.Split(" - ")[1].Trim().ToLower();
+        NavigationManager.NavigateTo(NavigationManager.Uri + $"pokemon/{name}");
     }
 
     private void SwipeAction(SwipeEventArgs swipeEventArgs)

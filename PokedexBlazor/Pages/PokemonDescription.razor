@@ -5,7 +5,7 @@
 @if (pokemon != null)
 {
     <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
-    <MudSwipeArea OnSwipeEnd="((d) => SwipeAction(d))" Style="width: 100%; height: 100%">
+    <MudSwipeArea OnSwipeEnd="SwipeAction" Style="width: 100%; height: 100%">
         <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
             <MudStack Justify="Justify.Center" Row="true">
                 <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
@@ -140,12 +140,14 @@ else
             await Task.Delay(500);
         }
         pokemon = PokemonService.Data;
+
         if (pokemon == null || !pokemon.Name.Equals(Name) || pokemon.Id != Id)
         {
             pokemon = PokemonService.PokemonList.FirstOrDefault(p => p.Name.Equals(Name) || p.Id == Id);
             if (pokemon == null)
             {
                 NavigationManager.NavigateTo("");
+                return;
             }
         }
         await localStorage.SetItemAsStringAsync(_selectedPageKey, Math.Ceiling((decimal)pokemon?.Id! / 12).ToString());

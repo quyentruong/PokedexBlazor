@@ -28,6 +28,11 @@ public class BasicUtility
         return temp > maxStars ? maxStars : temp;
     }
 
+    public static int GetCellResult(double value)
+    {
+        return (int)Math.Ceiling(value);
+    }
+
     public static string Capitalize(string str)
     {
         if (string.IsNullOrEmpty(str))

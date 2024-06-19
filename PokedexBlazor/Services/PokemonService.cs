@@ -1,5 +1,4 @@
-﻿using MudBlazor;
-using PokedexBlazor.Models;
+﻿using PokedexBlazor.Models;
 
 namespace PokedexBlazor.Services;
 

@@ -20,3 +20,9 @@ public class PokemonDietStat
     public string Name { get; set; }
     public double Value { get; set; }
 }
+
+public class PokemonFilterType
+{
+    public bool Default { get; set; }
+    public string Text { get; set; }
+}

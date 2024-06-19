@@ -1,14 +1,14 @@
 ﻿@page "/"
 <PageTitle>Pokedex</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Pokedex! Total Count: @filterPokemonList.Count</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Pokedex! Total Count: @PokemonService.PokemonFilterList.Count</MudText>
 
 <div class="d-flex flex-column align-center">
-    <MudPagination @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="BasicUtility.GetCellResult(filterPokemonList.Count/12.0)" />
+    <MudPagination @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="BasicUtility.GetCellResult(PokemonService.PokemonFilterList.Count/12.0)" />
     <MudGrid Justify="Justify.Center">
         <MudItem xs="12" sm="3">
             <MudSelect T="int" Value="@_selectedPage" ValueChanged="PageChanged" Label="Jump Page" AnchorOrigin="Origin.BottomCenter">
-                @for (var i = 1; i <= BasicUtility.GetCellResult(filterPokemonList.Count / 12.0); i++)
+                @for (var i = 1; i <= BasicUtility.GetCellResult(PokemonService.PokemonFilterList.Count / 12.0); i++)
                 {
                     <MudSelectItem T="int" Value="@i" />
                 }
@@ -19,21 +19,22 @@
         </MudItem>
     </MudGrid>
     <MudChipSet Style="margin-top: 20px" @bind-SelectedChips="selectedFilterType" MultiSelection="true" Filter="true">
-        @foreach (var type in uniquePokemonType)
+        @foreach (var type in PokemonService.UniquePokemonType)
         {
             <MudChip Default="@type.Default" Class="@BasicUtility.GetChipClass(type.Text)" Style="text-transform:capitalize" Text="@type.Text" Variant="Variant.Text" OnClick="OnChipClicked"></MudChip>
         }
     </MudChipSet>
 </div>
 
-@if (filterPokemonList.Count > _endIndex && filterPokemonList[_endIndex].Id != 0)
+@if (PokemonService.PokemonFilterList.Count > _endIndex && PokemonService.PokemonFilterList[_endIndex].Id != 0)
 {
     int startIndex = (_selectedPage - 1) * 12;
-    int endIndex = Math.Min(_selectedPage * 12, filterPokemonList.Count);
-    <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
-        <MudSwipeArea OnSwipeEnd="SwipeAction" Style="width: 100%; height: 100%">
+    int endIndex = Math.Min(_selectedPage * 12, PokemonService.PokemonFilterList.Count);
+    <MudSwipeArea OnSwipeEnd="SwipeAction" Style="width: 100%; height: 100%">
+        <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
+
             <MudGrid>
-                @foreach (var pokemon in filterPokemonList.Skip(startIndex).Take(endIndex - startIndex))
+                @foreach (var pokemon in PokemonService.PokemonFilterList.Skip(startIndex).Take(endIndex - startIndex))
                 {
                     <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
                         <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
@@ -46,8 +47,9 @@
                     </MudItem>
                 }
             </MudGrid>
-        </MudSwipeArea>
-    </Animation>
+
+        </Animation>
+    </MudSwipeArea>
 }
 else
 {
@@ -69,26 +71,26 @@ else
     private string foundPokemon = String.Empty;
     private string _selectedPageKey = "SelectedPage";
     private string _selectedTypeKey = "SelectedType";
-    private List<PokemonDiet> filterPokemonList = new();
-    private List<string> uniqueType = new() { "bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water" };
-    private List<PokemonFilterType> uniquePokemonType = new();
-    private MudChip[] selectedFilterType = new MudChip[] { };
-    private string[] _type = new string[] { };
+    private MudChip[] selectedFilterType = [];
 
     private async void OnChipClicked()
     {
 
         if (selectedFilterType.Length == 0)
         {
-            filterPokemonList = PokemonService.PokemonList;
+            PokemonService.PokemonFilterList = PokemonService.PokemonList;
             await localStorage.RemoveItemAsync(_selectedTypeKey);
+            PokemonService.IsFilterOn = false;
         }
         else
         {
-            filterPokemonList = PokemonService.PokemonList.Where(x => selectedFilterType.Any(y => x.Types.Contains(y.Text.ToLower()))).ToList();
+            PokemonService.PokemonFilterList = PokemonService.PokemonList.Where(x => selectedFilterType.Any(y => x.Types.Contains(y.Text.ToLower()))).ToList();
             var simpleFilterType = selectedFilterType.Select(chip => chip.Text).ToArray();
             await localStorage.SetItemAsync(_selectedTypeKey, simpleFilterType);
+            PokemonService.IsFilterOn = true;
         }
+        PageChanged(1);
+        StateHasChanged();
     }
 
     private async Task<IEnumerable<string>> SearchPokemon(string value)
@@ -96,7 +98,7 @@ else
         // In real life use an asynchronous function for fetching data from an api.
         await Task.Delay(5);
 
-        var temp = filterPokemonList.Select(pokemon => $"{pokemon.Id} - {@BasicUtility.Capitalize(pokemon.Name)}");
+        var temp = PokemonService.PokemonFilterList.Select(pokemon => $"{pokemon.Id} - {@BasicUtility.Capitalize(pokemon.Name)}");
 
         // if text is null or empty, show complete list
         if (string.IsNullOrEmpty(value))
@@ -107,36 +109,16 @@ else
     protected override async Task OnInitializedAsync()
     {
         // Wait for the PokemonService to be populated
-        while (PokemonService.PokemonList.Count == 0)
+        while (PokemonService.PokemonFilterList.Count == 0)
         {
             await Task.Delay(500);
         }
 
-        // Load types filter from local storage if available
-        if (await localStorage.ContainKeyAsync(_selectedTypeKey))
-        {
-            _type = await localStorage.GetItemAsync<string[]>(_selectedTypeKey) ?? new string[] { };
-        }
-        // Initialize the uniquePokemonType list based on the loaded types filter
-        uniquePokemonType = uniqueType.Select(x => new PokemonFilterType { Text = x, Default = _type.Contains(x, StringComparer.OrdinalIgnoreCase) }).ToList();
-
-        // Filter the Pokemon list based on the types filter
-        if (_type.Length != 0)
-        {
-            filterPokemonList = PokemonService.PokemonList.Where(x => _type.Any(y => x.Types.Contains(y.ToLower()))).ToList();
-        }
-        else
-        {
-            filterPokemonList = new(PokemonService.PokemonList);
-        }
-
         // Load the selected page from local storage and navigate
-        if (await localStorage.ContainKeyAsync(_selectedPageKey))
-        {
-            _selectedPage = int.TryParse(await localStorage.GetItemAsStringAsync(_selectedPageKey), out var page) ? page : 1;
-            _mudPagination?.NavigateTo(_selectedPage - 1);
-            GetPokemonList(_selectedPage);
-        }
+
+        _selectedPage = int.TryParse(await localStorage.GetItemAsStringAsync(_selectedPageKey), out var page) ? page : 1;
+        _mudPagination?.NavigateTo(_selectedPage - 1);
+        GetPokemonList(_selectedPage);
     }
 
     private void GetPokemonList(int page)
@@ -144,7 +126,7 @@ else
 
         _runAnimation = true;
         _selectedPage = page;
-        _endIndex = Math.Min(page * 12, filterPokemonList.Count) - 1;
+        _endIndex = Math.Min(page * 12, PokemonService.PokemonFilterList.Count) - 1;
         StateHasChanged();
         // update the key to force a re-render
         //renderKey = Guid.NewGuid().ToString();
@@ -185,17 +167,7 @@ else
 
     private void SwipeAction(SwipeEventArgs swipeEventArgs)
     {
-        Console.WriteLine(_endIndex);
-        var newPage = swipeEventArgs.SwipeDirection.ToDescriptionString() switch
-        {
-            "RightToLeft" when _selectedPage < 84 => _selectedPage + 1,
-            "LeftToRight" when _selectedPage > 1 => _selectedPage - 1,
-            _ => _selectedPage
-        };
-
-        if (newPage != _selectedPage)
-        {
-            PageChanged(newPage);
-        }
+        if (swipeEventArgs.SwipeDirection.ToDescriptionString().Equals("RightToLeft", StringComparison.OrdinalIgnoreCase) && _selectedPage < 84) PageChanged(_selectedPage + 1);
+        if (swipeEventArgs.SwipeDirection.ToDescriptionString().Equals("LeftToRight", StringComparison.OrdinalIgnoreCase) && _selectedPage > 1) PageChanged(_selectedPage - 1);
     }
 }

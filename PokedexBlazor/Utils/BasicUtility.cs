@@ -40,17 +40,24 @@ public class BasicUtility
             return str;
         }
 
-        // split the string into words
-        string[] words = str.Split('-', StringSplitOptions.RemoveEmptyEntries);
+        var sb = new StringBuilder(str.Length);
+        bool newWord = true;
 
-        // capitalize the first character of each word
-        for (int i = 0; i < words.Length; i++)
+        foreach (char c in str)
         {
-            words[i] = char.ToUpper(words[i][0]) + words[i][1..];
+            if (c == '-')
+            {
+                sb.Append(' ');
+                newWord = true;
+            }
+            else
+            {
+                sb.Append(newWord ? char.ToUpper(c) : c);
+                newWord = false;
+            }
         }
 
-        // join the words and return the result
-        return string.Join(" ", words);
+        return sb.ToString();
     }
 
     public static int ExtractNumberFromUrl(string url)

@@ -124,8 +124,8 @@ else
     private PokemonDiet? pokemon;
     private bool isPreviousPokemon;
     private bool isNextPokemon;
-    private PokemonDiet nextPokemon = null!;
-    private PokemonDiet previousPokemon = null!;
+    private PokemonDiet? nextPokemon;
+    private PokemonDiet? previousPokemon;
 
     private string _selectedPageKey = "SelectedPage";
 
@@ -135,40 +135,33 @@ else
         isNextPokemon = false;
         PokemonService.OnChange += StateHasChanged;
 
-        while (PokemonService.PokemonList.Count == 0)
+        while (PokemonService.PokemonFilterList.Count == 0)
         {
             await Task.Delay(500);
         }
-        pokemon = PokemonService.Data;
+        pokemon = PokemonService.Data ?? PokemonService.PokemonFilterList.FirstOrDefault(p => p.Name.Equals(Name, StringComparison.OrdinalIgnoreCase) || p.Id == Id);
 
-        if (pokemon == null || !pokemon.Name.Equals(Name) || pokemon.Id != Id)
+        if (pokemon == null)
         {
-            pokemon = PokemonService.PokemonList.FirstOrDefault(p => p.Name.Equals(Name) || p.Id == Id);
-            if (pokemon == null)
-            {
-                NavigationManager.NavigateTo("");
-                return;
-            }
+            NavigationManager.NavigateTo("");
+            return;
         }
-        await localStorage.SetItemAsStringAsync(_selectedPageKey, Math.Ceiling((decimal)pokemon?.Id! / 12).ToString());
-        var _ = PokemonService.PokemonList.FirstOrDefault(p => p.Id == pokemon?.Id + 1);
-        if (_ != null)
+
+        var currentIndex = PokemonService.PokemonFilterList.FindIndex(p => p.Id == pokemon?.Id);
+        if (currentIndex != -1)
         {
-            nextPokemon = _;
+            var pageNumber = BasicUtility.GetCellResult((currentIndex + 1) / 12.0);
+            await localStorage.SetItemAsStringAsync(_selectedPageKey, pageNumber.ToString());
         }
-        else
-        {
-            isNextPokemon = true;
-        }
-        _ = PokemonService.PokemonList.FirstOrDefault(p => p.Id == pokemon?.Id - 1);
-        if (_ != null)
-        {
-            previousPokemon = _;
-        }
-        else
-        {
-            isPreviousPokemon = true;
-        }
+
+        // Simplify the assignment of next and previous Pokémon
+        nextPokemon = currentIndex + 1 < PokemonService.PokemonFilterList.Count ? PokemonService.PokemonFilterList[currentIndex + 1] : null;
+        previousPokemon = currentIndex > 0 ? PokemonService.PokemonFilterList[currentIndex - 1] : null;
+
+        // Update flags based on the existence of next and previous Pokémon
+        isNextPokemon = nextPokemon == null;
+        isPreviousPokemon = previousPokemon == null;
+
         _totalStat = pokemon!.Stats.Sum(x => x.Value);
 
         if (pokemon.Stats.Count == 7)
@@ -210,13 +203,13 @@ else
 
     private void PreviousPokemonAction()
     {
-        _effect = Effect.SlideInLeft;
+        if (previousPokemon == null) return;
         HandleClick(previousPokemon);
     }
 
     private void NextPokemonAction()
     {
-        _effect = Effect.SlideInRight;
+        if (nextPokemon == null) return;
         HandleClick(nextPokemon);
     }
 

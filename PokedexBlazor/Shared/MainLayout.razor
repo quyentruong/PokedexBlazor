@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-
+@implements IDisposable
 
 <MudThemeProvider @ref="@_mudThemeProvider" IsDarkMode="@_isDarkMode" />
 <MudDialogProvider />
@@ -10,6 +10,9 @@
         <PWAUpdater />
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
+        <MudTooltip Text="@filterTooltipText">
+            <MudIconButton Icon="@filterIcon" Color="Color.Inherit" />
+        </MudTooltip>
         <MudTooltip Text="@modeTooltipText">
             <MudIconButton Icon="@modeIcon" Color="Color.Inherit" @onclick="ToggleDarkMode" />
         </MudTooltip>
@@ -28,22 +31,26 @@
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large">
-            @Body 
+            @Body
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
 @code {
-
+    private string filterIcon => PokemonService.IsFilterOn ? Icons.Material.Outlined.FilterList : Icons.Material.Outlined.FilterListOff;
+    private string filterTooltipText => PokemonService.IsFilterOn ? "Filter On" : "Filter Off";
     private string modeIcon => _isDarkMode ? Icons.Material.Outlined.DarkMode : @Icons.Material.Outlined.LightMode;
     private string modeTooltipText => _isDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme";
     private bool _isDarkMode;
     private string _isDarkModeKey = "IsDarkMode";
+    private string _selectedTypeKey = "SelectedType";
     bool _drawerOpen = false;
     private MudThemeProvider? _mudThemeProvider;
+    private string[] _type = [];
 
     protected override async Task OnInitializedAsync()
     {
+        List<string> uniqueType = new() { "bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water" };
         // Check cache of pokemon list if existed
         // 1. decompress string
         // 2. deserialize to list pokemon
@@ -54,12 +61,29 @@
 
         PokemonService.PokemonList = JsonConvert.DeserializeObject<List<PokemonDiet>>(pokemonJson)!;
         PokemonService.TypeDamageDict = JsonConvert.DeserializeObject<Dictionary<string, TypeDamageRelation>>(typeDamageJson)!;
+        PokemonService.OnChange += StateHasChanged;
 
-        if (localStorageSync.ContainKey(_isDarkModeKey))
-        {
-            _isDarkMode = localStorageSync.GetItem<bool>(_isDarkModeKey);
-            PokemonService.IsDarkMode = _isDarkMode;
-        }
+        _isDarkMode = localStorageSync.GetItem<bool>(_isDarkModeKey);
+        PokemonService.IsDarkMode = _isDarkMode;
+
+        // Load types filter from local storage if available
+        _type = await localStorage.GetItemAsync<string[]>(_selectedTypeKey) ?? Array.Empty<string>();
+
+        // Initialize the uniquePokemonType list based on the loaded types filter
+        PokemonService.UniquePokemonType = uniqueType
+            .Select(x => new PokemonFilterType
+                {
+                    Text = x,
+                    Default = _type.Contains(x, StringComparer.OrdinalIgnoreCase)
+                })
+            .ToList();
+        PokemonService.IsFilterOn = _type.Length > 0;
+        // Filter the Pokemon list based on the types filter
+        PokemonService.PokemonFilterList = _type.Length > 0
+            ? PokemonService.PokemonList
+                .Where(x => _type.Any(y => x.Types.Contains(y.ToLower())))
+                .ToList()
+            : new List<PokemonDiet>(PokemonService.PokemonList);
     }
 
     async void ToggleDarkMode()
@@ -72,6 +96,11 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    public void Dispose()
+    {
+        PokemonService.OnChange -= StateHasChanged;
     }
 
 }

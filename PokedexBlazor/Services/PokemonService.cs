@@ -16,6 +16,18 @@ public class PokemonService
         }
     }
 
+    private bool _isFilterOn = false;
+
+    public bool IsFilterOn
+    {
+        get => _isFilterOn;
+        set
+        {
+            _isFilterOn = value;
+            NotifyStateChanged();
+        }
+    }
+
     private PokemonDiet _data = null!;
 
     public PokemonDiet Data
@@ -36,12 +48,28 @@ public class PokemonService
         set { _typeDamageDict = value; NotifyStateChanged(); }
     }
 
-    private List<PokemonDiet> _pokemonlist = new();
+    private List<PokemonDiet> _pokemonlist = [];
 
     public List<PokemonDiet> PokemonList
     {
         get => _pokemonlist;
         set { _pokemonlist = value; NotifyStateChanged(); }
+    }
+
+    private List<PokemonDiet> _pokemonFilterlist = [];
+
+    public List<PokemonDiet> PokemonFilterList
+    {
+        get => _pokemonFilterlist;
+        set { _pokemonFilterlist = value; NotifyStateChanged(); }
+    }
+
+    private List<PokemonFilterType> _uniquePokemonType = [];
+
+    public List<PokemonFilterType> UniquePokemonType
+    {
+        get => _uniquePokemonType;
+        set { _uniquePokemonType = value; NotifyStateChanged(); }
     }
 
     public void Add(PokemonDiet pokemon)

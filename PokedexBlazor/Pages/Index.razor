@@ -26,7 +26,13 @@
     </MudChipSet>
 </div>
 
-@if (PokemonService.PokemonFilterList.Count > _endIndex && PokemonService.PokemonFilterList[_endIndex].Id != 0)
+@if (_endIndex == -1)
+{
+    <div class="d-flex align-center justify-center" style="margin-top:85px">
+        <MudText Typo="Typo.h5">No Pokémon found matching the selected types.</MudText>
+    </div>
+}
+else if (PokemonService.PokemonFilterList.Count > _endIndex && PokemonService.PokemonFilterList[_endIndex].Id != 0)
 {
     int startIndex = (_selectedPage - 1) * 12;
     int endIndex = Math.Min(_selectedPage * 12, PokemonService.PokemonFilterList.Count);
@@ -72,6 +78,7 @@ else
     private string _selectedPageKey = "SelectedPage";
     private string _selectedTypeKey = "SelectedType";
     private MudChip[] selectedFilterType = [];
+    List<string> uniqueType = new() { "bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water" };
 
     private async void OnChipClicked()
     {
@@ -84,9 +91,18 @@ else
         }
         else
         {
-            PokemonService.PokemonFilterList = PokemonService.PokemonList.Where(x => selectedFilterType.Any(y => x.Types.Contains(y.Text.ToLower()))).ToList();
-            var simpleFilterType = selectedFilterType.Select(chip => chip.Text).ToArray();
-            await localStorage.SetItemAsync(_selectedTypeKey, simpleFilterType);
+            var selectedTypes = selectedFilterType.Select(chip => chip.Text).ToArray();
+            PokemonService.PokemonFilterList = PokemonService.PokemonList
+                .Where(pokemon => selectedTypes.All(type => pokemon.Types.Contains(type)))
+                .ToList();
+            PokemonService.UniquePokemonType = uniqueType
+            .Select(x => new PokemonFilterType
+                {
+                    Text = x,
+                    Default = selectedTypes.Contains(x)
+                })
+            .ToList();
+            await localStorage.SetItemAsync(_selectedTypeKey, selectedTypes);
             PokemonService.IsFilterOn = true;
         }
         PageChanged(1);
@@ -108,17 +124,31 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        // Wait for the PokemonService to be populated
-        while (PokemonService.PokemonFilterList.Count == 0)
+        var cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(TimeSpan.FromSeconds(2)); // Set timeout to 5 seconds
+        try
         {
-            await Task.Delay(500);
+            // Wait for the PokemonService to be populated or until the timeout is reached
+            while (PokemonService.PokemonFilterList.Count == 0)
+            {
+                await Task.Delay(500, cancellationTokenSource.Token);
+            }
+
+            // Load the selected page from local storage and navigate
+
+            _selectedPage = int.TryParse(await localStorage.GetItemAsStringAsync(_selectedPageKey), out var page) ? page : 1;
+            _mudPagination?.NavigateTo(_selectedPage - 1);
+            GetPokemonList(_selectedPage);
         }
-
-        // Load the selected page from local storage and navigate
-
-        _selectedPage = int.TryParse(await localStorage.GetItemAsStringAsync(_selectedPageKey), out var page) ? page : 1;
-        _mudPagination?.NavigateTo(_selectedPage - 1);
-        GetPokemonList(_selectedPage);
+        catch (TaskCanceledException)
+        {
+            // If the loop is cancelled due to timeout, set _endIndex to -1
+            _endIndex = -1;
+        }
+        finally
+        {
+            cancellationTokenSource.Dispose();
+        }
     }
 
     private void GetPokemonList(int page)

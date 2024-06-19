@@ -204,12 +204,14 @@ else
     private void PreviousPokemonAction()
     {
         if (previousPokemon == null) return;
+        _effect = Effect.SlideInLeft;
         HandleClick(previousPokemon);
     }
 
     private void NextPokemonAction()
     {
         if (nextPokemon == null) return;
+        _effect = Effect.SlideInRight;
         HandleClick(nextPokemon);
     }
 

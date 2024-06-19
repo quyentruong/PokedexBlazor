@@ -81,7 +81,7 @@
         // Filter the Pokemon list based on the types filter
         PokemonService.PokemonFilterList = _type.Length > 0
             ? PokemonService.PokemonList
-                .Where(x => _type.Any(y => x.Types.Contains(y.ToLower())))
+                .Where(x => _type.All(y => x.Types.Contains(y.ToLower())))
                 .ToList()
             : new List<PokemonDiet>(PokemonService.PokemonList);
     }

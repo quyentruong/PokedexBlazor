@@ -4,6 +4,27 @@ namespace PokedexBlazor.Services;
 
 public class PokemonService
 {
+    public List<string> UNIQUE_TYPE =
+    [
+        "bug",
+        "dark",
+        "dragon",
+        "electric",
+        "fairy",
+        "fighting",
+        "fire",
+        "flying",
+        "ghost",
+        "grass",
+        "ground",
+        "ice",
+        "normal",
+        "poison",
+        "psychic",
+        "rock",
+        "steel",
+        "water"
+    ];
     private bool _isDarkMode = false;
 
     public bool IsDarkMode
@@ -40,12 +61,16 @@ public class PokemonService
         }
     }
 
-    private Dictionary<string, TypeDamageRelation> _typeDamageDict = new();
+    private Dictionary<string, TypeDamageRelation> _typeDamageDict = [];
 
     public Dictionary<string, TypeDamageRelation> TypeDamageDict
     {
         get { return _typeDamageDict; }
-        set { _typeDamageDict = value; NotifyStateChanged(); }
+        set
+        {
+            _typeDamageDict = value;
+            NotifyStateChanged();
+        }
     }
 
     private List<PokemonDiet> _pokemonlist = [];
@@ -53,7 +78,11 @@ public class PokemonService
     public List<PokemonDiet> PokemonList
     {
         get => _pokemonlist;
-        set { _pokemonlist = value; NotifyStateChanged(); }
+        set
+        {
+            _pokemonlist = value;
+            NotifyStateChanged();
+        }
     }
 
     private List<PokemonDiet> _pokemonFilterlist = [];
@@ -61,7 +90,22 @@ public class PokemonService
     public List<PokemonDiet> PokemonFilterList
     {
         get => _pokemonFilterlist;
-        set { _pokemonFilterlist = value; NotifyStateChanged(); }
+        set
+        {
+            _pokemonFilterlist = value;
+            NotifyStateChanged();
+        }
+    }
+
+    private IEnumerable<string> _searchList = [];
+    public IEnumerable<string> SearchList
+    {
+        get => _searchList;
+        set
+        {
+            _searchList = value;
+            NotifyStateChanged();
+        }
     }
 
     private List<PokemonFilterType> _uniquePokemonType = [];
@@ -69,7 +113,11 @@ public class PokemonService
     public List<PokemonFilterType> UniquePokemonType
     {
         get => _uniquePokemonType;
-        set { _uniquePokemonType = value; NotifyStateChanged(); }
+        set
+        {
+            _uniquePokemonType = value;
+            NotifyStateChanged();
+        }
     }
 
     public void Add(PokemonDiet pokemon)

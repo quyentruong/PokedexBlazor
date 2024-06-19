@@ -137,8 +137,8 @@ public class BasicUtility
 
     public static string ConvertHgToLbs(double hg)
     {
-        const double kgPerHg = 0.1;   // 1 hectogram = 0.1 kilograms
-        const double lbsPerKg = 2.20462;   // 1 kilogram = 2.20462 pounds
+        const double kgPerHg = 0.1; // 1 hectogram = 0.1 kilograms
+        const double lbsPerKg = 2.20462; // 1 kilogram = 2.20462 pounds
 
         double kg = hg * kgPerHg;
         double lbs = Math.Round(kg * lbsPerKg, 1);

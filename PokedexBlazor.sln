@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokedexBlazor", "PokedexBlazor\PokedexBlazor.csproj", "{2992DC0A-9EC9-49B2-901F-E5B5652B0739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFunction", "TestFunction\TestFunction.csproj", "{8AB4F2A4-0C8E-47CD-856F-CE36DCD51A42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFunction", "TestFunction\TestFunction.csproj", "{8AB4F2A4-0C8E-47CD-856F-CE36DCD51A42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

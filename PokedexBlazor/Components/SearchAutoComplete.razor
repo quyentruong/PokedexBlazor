@@ -1,0 +1,100 @@
+﻿@using System.ComponentModel.DataAnnotations
+@implements IDisposable
+@if (editContext != null)
+{
+    <EditForm EditContext="editContext">
+        <DataAnnotationsValidator />
+        <MudAutocomplete T="string" Label="Pokemon" @bind-Value="choice.Pokemon" Required CoerceValue SearchFunc="@SearchAsync"  MaxItems="20" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary"
+                         OnAdornmentClick="() => { if (editContext.Validate()) ClickHandlerService.HandleClick(choice.Pokemon); }"
+        For="@(()=>choice.Pokemon)" />
+    </EditForm>
+}
+@code {
+    private bool success;
+    private Choice choice = new();
+    private EditContext? editContext;
+    private static IEnumerable<string> _pokemonList = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        while (PokemonService.PokemonFilterList.Count == 0)
+        {
+            await Task.Delay(500);
+        }
+     
+        editContext = new EditContext(choice);
+        PokemonService.OnChange += () => _ = UpdatePokemonList();
+
+        await UpdatePokemonList();
+    }
+
+    private async Task UpdatePokemonList()
+    {
+        // Assuming UniquePokemonType affects the PokemonFilterList or another relevant list
+        // Update this logic based on how UniquePokemonType impacts the list you're displaying
+        while (PokemonService.PokemonFilterList.Count == 0)
+        {
+            await Task.Delay(500);
+        }
+        _pokemonList = PokemonService.PokemonFilterList.Select(pokemon => $"{pokemon.Id} - {@BasicUtility.Capitalize(pokemon.Name)}");
+
+        // Force the component to re-render if needed
+        StateHasChanged();
+    }
+
+    private async Task<IEnumerable<string>> SearchAsync(string value)
+    {
+        
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(5);
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return _pokemonList;
+        return _pokemonList.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private IEnumerable<string> Validate(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            yield return "The Pokemon field is required";
+            yield break;
+        }
+
+        if (!_pokemonList.Contains(value))
+        {
+            yield return "This is an incorrect value";
+        }
+    }
+
+    protected class Choice
+    {
+        [Required]
+        [Pokemon]
+        public string Pokemon { get; set; } = string.Empty;
+    }
+
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter)]
+    public sealed class PokemonAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+        {
+            if (!_pokemonList.Contains(value?.ToString() ?? string.Empty))
+            {
+                // Ensure that the array passed does not contain null values
+                var memberNames = validationContext.MemberName != null ? new[] { validationContext.MemberName } : Array.Empty<string>();
+                return new ValidationResult("This is an incorrect value", memberNames);
+            }
+
+            // Return ValidationResult.Success to indicate success without errors
+            return ValidationResult.Success!;
+        }
+    }
+
+    public void Dispose()
+    {
+        PokemonService.OnChange -= () => _ = UpdatePokemonList();
+    }
+}

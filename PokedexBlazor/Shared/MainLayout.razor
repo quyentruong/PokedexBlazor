@@ -50,7 +50,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        List<string> uniqueType = new() { "bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water" };
         // Check cache of pokemon list if existed
         // 1. decompress string
         // 2. deserialize to list pokemon
@@ -64,19 +63,19 @@
         PokemonService.OnChange += StateHasChanged;
 
         _isDarkMode = localStorageSync.GetItem<bool>(_isDarkModeKey);
-        PokemonService.IsDarkMode = _isDarkMode;
+                PokemonService.IsDarkMode = _isDarkMode;
 
         // Load types filter from local storage if available
         _type = await localStorage.GetItemAsync<string[]>(_selectedTypeKey) ?? Array.Empty<string>();
 
         // Initialize the uniquePokemonType list based on the loaded types filter
-        PokemonService.UniquePokemonType = uniqueType
-            .Select(x => new PokemonFilterType
-                {
-                    Text = x,
-                    Default = _type.Contains(x, StringComparer.OrdinalIgnoreCase)
-                })
-            .ToList();
+        PokemonService.UniquePokemonType = PokemonService.UNIQUE_TYPE
+             .Select(x => new PokemonFilterType
+                 {
+                     Text = x,
+                     Default = _type.Contains(x, StringComparer.OrdinalIgnoreCase)
+                 })
+             .ToList();
         PokemonService.IsFilterOn = _type.Length > 0;
         // Filter the Pokemon list based on the types filter
         PokemonService.PokemonFilterList = _type.Length > 0

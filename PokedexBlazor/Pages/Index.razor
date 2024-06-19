@@ -6,7 +6,7 @@
 <div class="d-flex flex-column align-center">
     <MudPagination @ref="_mudPagination" SelectedChanged="PageChanged" Color="Color.Primary" Count="BasicUtility.GetCellResult(PokemonService.PokemonFilterList.Count/12.0)" />
     <MudGrid Justify="Justify.Center">
-        <MudItem xs="12" sm="3">
+        <MudItem xs="12" sm="2" md="3">
             <MudSelect T="int" Value="@_selectedPage" ValueChanged="PageChanged" Label="Jump Page" AnchorOrigin="Origin.BottomCenter">
                 @for (var i = 1; i <= BasicUtility.GetCellResult(PokemonService.PokemonFilterList.Count / 12.0); i++)
                 {
@@ -14,11 +14,11 @@
                 }
             </MudSelect>
         </MudItem>
-        <MudItem xs="12" sm="3">
-            <MudAutocomplete T="string" Label="Pokemon" @bind-Value="foundPokemon" SearchFunc="@SearchPokemon" MaxItems="20" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" OnAdornmentClick="()=>HandleClick(foundPokemon)" />
+        <MudItem xs="12" sm="10" md="9">
+            <PokedexBlazor.Components.SearchAutoComplete />
         </MudItem>
     </MudGrid>
-    <MudChipSet Style="margin-top: 20px" @bind-SelectedChips="selectedFilterType" MultiSelection="true" Filter="true">
+    <MudChipSet Style="margin-top: 20px" @bind-SelectedChips="selectedFilterType" MultiSelection Filter>
         @foreach (var type in PokemonService.UniquePokemonType)
         {
             <MudChip Default="@type.Default" Class="@BasicUtility.GetChipClass(type.Text)" Style="text-transform:capitalize" Text="@type.Text" Variant="Variant.Text" OnClick="OnChipClicked"></MudChip>
@@ -43,7 +43,7 @@ else if (PokemonService.PokemonFilterList.Count > _endIndex && PokemonService.Po
                 @foreach (var pokemon in PokemonService.PokemonFilterList.Skip(startIndex).Take(endIndex - startIndex))
                 {
                     <MudItem xs="12" sm="6" md="4" lg="3" xl="2">
-                        <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" Class="cursor-pointer" @onclick="()=>HandleClick(pokemon)" />
+                        <MudImage Fluid="true" Src="@BasicUtility.PokemonImage(pokemon.Id)" Alt="@pokemon.Name" Class="cursor-pointer" @onclick="()=>ClickHandlerService.HandleClick(pokemon)" />
                         <MudText Typo="Typo.caption">@BasicUtility.ConvertToHashCode(pokemon.Id)</MudText>
                         <MudText Typo="Typo.h6">@BasicUtility.Capitalize(pokemon.Name)</MudText>
                         @foreach (var type in pokemon.Types)
@@ -74,11 +74,9 @@ else
     private MudPagination? _mudPagination;
     private int _endIndex = 0;
     private int _selectedPage = 1;
-    private string foundPokemon = String.Empty;
     private string _selectedPageKey = "SelectedPage";
     private string _selectedTypeKey = "SelectedType";
     private MudChip[] selectedFilterType = [];
-    List<string> uniqueType = new() { "bug", "dark", "dragon", "electric", "fairy", "fighting", "fire", "flying", "ghost", "grass", "ground", "ice", "normal", "poison", "psychic", "rock", "steel", "water" };
 
     private async void OnChipClicked()
     {
@@ -95,7 +93,7 @@ else
             PokemonService.PokemonFilterList = PokemonService.PokemonList
                 .Where(pokemon => selectedTypes.All(type => pokemon.Types.Contains(type)))
                 .ToList();
-            PokemonService.UniquePokemonType = uniqueType
+            PokemonService.UniquePokemonType = PokemonService.UNIQUE_TYPE
             .Select(x => new PokemonFilterType
                 {
                     Text = x,
@@ -107,19 +105,6 @@ else
         }
         PageChanged(1);
         StateHasChanged();
-    }
-
-    private async Task<IEnumerable<string>> SearchPokemon(string value)
-    {
-        // In real life use an asynchronous function for fetching data from an api.
-        await Task.Delay(5);
-
-        var temp = PokemonService.PokemonFilterList.Select(pokemon => $"{pokemon.Id} - {@BasicUtility.Capitalize(pokemon.Name)}");
-
-        // if text is null or empty, show complete list
-        if (string.IsNullOrEmpty(value))
-            return temp;
-        return temp.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
     protected override async Task OnInitializedAsync()
@@ -172,28 +157,6 @@ else
 
         await localStorage.SetItemAsStringAsync(_selectedPageKey, i.ToString());
         GetPokemonList(i);
-    }
-
-    public void HandleClick(object p)
-    {
-        string name;
-
-        if (p is PokemonDiet pokemon)
-        {
-            PokemonService.Data = pokemon;
-            name = pokemon.Name;
-        }
-        else if (p is string idAndName)
-        {
-            name = idAndName.Split(" - ")[1].Trim().ToLower();
-            PokemonService.Data = PokemonService.PokemonFilterList.FirstOrDefault(pokemon => pokemon.Name.ToLower().Equals(name));
-        }
-        else
-        {
-            throw new ArgumentException("Unhandled parameter type", nameof(p));
-        }
-
-        NavigationManager.NavigateTo($"{NavigationManager.Uri}pokemon/{name}");
     }
 
     private void SwipeAction(SwipeEventArgs swipeEventArgs)

@@ -65,7 +65,7 @@
       "url": "_framework\/icudt_no_CJK.dat.br"
     },
     {
-      "hash": "sha256-6Py+m2JJUmQx38fwvg8EPJaBeZmaryJ8Ty+8\/sA83RU=",
+      "hash": "sha256-dJbtwcDQeb\/7Z+Jb\/jyez1SJTKuShXWuPPDc01k6W6k=",
       "url": "_framework\/blazor.boot.json.br"
     },
     {
@@ -73,7 +73,7 @@
       "url": "_framework\/dotnet.native.8.0.6.fmkmb12gs2.js"
     },
     {
-      "hash": "sha256-Vmf+vpmQN9hhq3GhPsGaQYB8C7+8nc8elcK6IPw0n4c=",
+      "hash": "sha256-PUVIg1yTIfd3hI12TyyQLMzWRPHViodciEXMqmRh390=",
       "url": "_framework\/dotnet.native.wasm.br"
     },
     {
@@ -169,7 +169,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm.br"
     },
     {
-      "hash": "sha256-u+3xNIg3ljksQ45EuT5i1hdXCTUTLHnRl1GgdLkB+QI=",
+      "hash": "sha256-X\/BwyWKlOyn2f+Cv9LNKVAN3nSeCGzoBC4FUumYnbxg=",
       "url": "_framework\/PokedexBlazor.wasm.br"
     },
     {
@@ -209,7 +209,7 @@
       "url": "_framework\/System.ComponentModel.wasm.br"
     },
     {
-      "hash": "sha256-x8s7u4aV6+UzIk4Mp1yIvOF9ub\/9xfIQ6bfs2q+5tTU=",
+      "hash": "sha256-bBj5Z5gleh1MYwM6ypiZCU+zFJ1h0gWTes32y6uP+XY=",
       "url": "_framework\/System.Console.wasm.br"
     },
     {
@@ -265,7 +265,7 @@
       "url": "_framework\/System.ObjectModel.wasm.br"
     },
     {
-      "hash": "sha256-9wrgjx6FaX1iRAUkXW6RvitqEC7CxYa\/XtakQtNAHik=",
+      "hash": "sha256-G9m927EgjvUWfv\/VESZcLDYTKp9fDLjPkNlTtEgc0Wg=",
       "url": "_framework\/System.Private.CoreLib.wasm.br"
     },
     {
@@ -313,7 +313,7 @@
       "url": "_framework\/System.Runtime.Serialization.Primitives.wasm.br"
     },
     {
-      "hash": "sha256-wlgiDdjsSI7AgVhtdbyIiMZkJp7K6\/y\/9TRBNIT\/1Vw=",
+      "hash": "sha256-mkEVVKFWcWG1tuutdgHBIpTkwYozPFlMe5Im5YvESEg=",
       "url": "_framework\/System.Runtime.wasm.br"
     },
     {
@@ -401,5 +401,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "W9vWULuP"
+  "version": "ILhEnNrb"
 };

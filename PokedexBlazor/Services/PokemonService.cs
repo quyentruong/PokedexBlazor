@@ -28,9 +28,9 @@ public class PokemonService
         }
     }
 
-    private PokemonDiet _data = null!;
+    private PokemonDiet? _data = null;
 
-    public PokemonDiet Data
+    public PokemonDiet? Data
     {
         get => _data;
         set

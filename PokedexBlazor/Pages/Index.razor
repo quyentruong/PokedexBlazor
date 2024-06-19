@@ -186,6 +186,7 @@ else
         else if (p is string idAndName)
         {
             name = idAndName.Split(" - ")[1].Trim().ToLower();
+            PokemonService.Data = PokemonService.PokemonFilterList.FirstOrDefault(pokemon => pokemon.Name.ToLower().Equals(name));
         }
         else
         {

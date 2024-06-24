@@ -5,7 +5,7 @@
 @if (pokemon != null)
 {
     <PageTitle>@BasicUtility.Capitalize(pokemon.Name) @BasicUtility.ConvertToHashCode(pokemon.Id)</PageTitle>
-    <MudSwipeArea OnSwipeEnd="SwipeAction" Style="width: 100%; height: 100%">
+    <MudSwipeArea OnSwipeEnd="SwipeAction">
         <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
             <MudStack Justify="Justify.Center" Row="true">
                 <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
@@ -82,12 +82,13 @@
 
                 </MudItem>
             </MudGrid>
-
             <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
                 <div style="height:50px"></div>
             </MudHidden>
         </Animation>
     </MudSwipeArea>
+
+
 
     <MudAppBar Bottom="true" Elevation="1" Dense="true">
         <MudIconButton Disabled="isPreviousPokemon" Style='color:azure' Icon="fa-duotone fa-arrow-left" OnClick="PreviousPokemonAction" />
@@ -211,7 +212,7 @@ else
     private void NextPokemonAction()
     {
         if (nextPokemon == null) return;
-        _effect = Effect.SlideInRight;
+        _effect = Effect.BounceInRight;
         HandleClick(nextPokemon);
     }
 

@@ -36,7 +36,7 @@ else if (PokemonService.PokemonFilterList.Count > _endIndex && PokemonService.Po
 {
     int startIndex = (_selectedPage - 1) * 12;
     int endIndex = Math.Min(_selectedPage * 12, PokemonService.PokemonFilterList.Count);
-    <MudSwipeArea OnSwipeEnd="SwipeAction" Style="width: 100%; height: 100%">
+    <MudSwipeArea OnSwipeEnd="SwipeAction" Style="width: 100%; height: 10px">
         <Animation Effect="_effect" Speed="Speed.Faster" IterationCount="1" Enabled="_runAnimation" OnAnimationEnd="() => _runAnimation = false">
 
             <MudGrid>
@@ -53,7 +53,6 @@ else if (PokemonService.PokemonFilterList.Count > _endIndex && PokemonService.Po
                     </MudItem>
                 }
             </MudGrid>
-
         </Animation>
     </MudSwipeArea>
 }
@@ -168,7 +167,7 @@ else
 
     private void SwipeAction(SwipeEventArgs swipeEventArgs)
     {
-        if (swipeEventArgs.SwipeDirection.ToDescriptionString().Equals("RightToLeft", StringComparison.OrdinalIgnoreCase) && _selectedPage < 84) PageChanged(_selectedPage + 1);
+        if (swipeEventArgs.SwipeDirection.ToDescriptionString().Equals("RightToLeft", StringComparison.OrdinalIgnoreCase) && _selectedPage < BasicUtility.GetCellResult(PokemonService.PokemonFilterList.Count / 12.0)) { PageChanged(_selectedPage + 1); }
         if (swipeEventArgs.SwipeDirection.ToDescriptionString().Equals("LeftToRight", StringComparison.OrdinalIgnoreCase) && _selectedPage > 1) PageChanged(_selectedPage - 1);
     }
 }

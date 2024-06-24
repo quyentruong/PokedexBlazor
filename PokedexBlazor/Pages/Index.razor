@@ -86,6 +86,13 @@ else
             PokemonService.PokemonFilterList = PokemonService.PokemonList;
             await localStorage.RemoveItemAsync(_selectedTypeKey);
             PokemonService.IsFilterOn = false;
+            PokemonService.UniquePokemonType = PokemonService.UNIQUE_TYPE
+                .Select(x => new PokemonFilterType
+                {
+                    Text = x,
+                    Default = false
+                })
+                .ToList();
         }
         else
         {

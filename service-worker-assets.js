@@ -1,14 +1,6 @@
 ﻿self.assetsManifest = {
   "assets": [
     {
-      "hash": "sha256-rsYC51tm86ys58KJ6oyuJXjS3xuTW5mOPa+OiIqRb0c=",
-      "url": "css\/font-awesome.all.css"
-    },
-    {
-      "hash": "sha256-CWBGJ\/1ngVErxmcQRXO6xbhT9iITbmpiOXV7yUXpm2A=",
-      "url": "css\/font-awesome.all.min.css"
-    },
-    {
       "hash": "sha256-IIkpzHYIrRnjVDU\/sZS8CBiE7+u3qJqc\/YykhhrfvPY=",
       "url": "css\/main.css"
     },
@@ -29,7 +21,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-mlvEGro\/moPVsQda\/qhB8FI4CxYc\/Y4MGe2v4ebMcD8=",
+      "hash": "sha256-7C1hqVFQJYkkXIkQkjnX78tWQlncmordvkMp1ZIVLTc=",
       "url": "index.html"
     },
     {
@@ -69,7 +61,7 @@
       "url": "_framework\/icudt_no_CJK.dat.br"
     },
     {
-      "hash": "sha256-NFZ6AUXOliNJXoxwhnh5PO+3v1SeMPjCJZwHzbx6JzI=",
+      "hash": "sha256-RAUJBEGsQCnOoClAxKKgCMGJxxPk678JH4HPVcZ4hGg=",
       "url": "_framework\/blazor.boot.json.br"
     },
     {
@@ -173,7 +165,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm.br"
     },
     {
-      "hash": "sha256-nLrkWOAXUphfd7JuJ4FzK8a\/LsnDndXxqqe3+DN1w+8=",
+      "hash": "sha256-5dW7TNz4uAek5XNTBXCARpZDWpbj77tMWi1gycpXwHk=",
       "url": "_framework\/PokedexBlazor.wasm.br"
     },
     {
@@ -405,5 +397,5 @@
       "url": "brotliloader.min.js"
     }
   ],
-  "version": "mAon5YLS"
+  "version": "egQw+D14"
 };
